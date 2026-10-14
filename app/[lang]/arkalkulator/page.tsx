@@ -4,26 +4,37 @@ import KalkulatorClient from "@/components/KalkulatorClient";
 import FadeIn from "@/components/FadeIn";
 import Link from "next/link";
 import { Info, ArrowRight } from "lucide-react";
+import { notFound } from "next/navigation";
+import { hasLocale, localizePath } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { pageMetadata } from "@/lib/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "Árkalkulátor   Tetőfedés és bádogos munkák becsült ára | Máté Tetőfedő",
-  description:
-    "Számítsa ki tetőfedési munkák becsült költségét. Valós piaci árak alapján, ingyenes. Pontos ár a helyszíni felmérés után.",
-  openGraph: {
-    title: "Árkalkulátor   Tetőfedés és bádogos munkák becsült ára | Máté Tetőfedő",
-    description:
-      "Számítsa ki tetőfedési munkák becsült költségét. Valós piaci árak alapján, ingyenes.",
-    type: "website",
-  },
-};
+type PageParams = { params: Promise<{ lang: string }> };
 
-export default function ArkalkulatorPage() {
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const { calculatorPage: t } = await getDictionary(lang);
+  return pageMetadata(lang, "/arkalkulator", {
+    title: t.metaTitle,
+    description: t.metaDescription,
+    ogDescription: t.ogDescription,
+  });
+}
+
+export default async function ArkalkulatorPage({ params }: PageParams) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const dict = await getDictionary(lang);
+  const t = dict.calculatorPage;
+
   return (
     <>
       <PageHero
-        title="Árkalkulátor"
-        subtitle="Becsülje fel a várható költségeket   valós piaci árak alapján"
-        breadcrumbs={[{ label: "Főoldal", href: "/" }, { label: "Árkalkulátor" }]}
+        title={t.title}
+        subtitle={t.subtitle}
+        breadcrumbs={[{ label: dict.common.home, href: localizePath(lang, "/") }, { label: t.title }]}
+        breadcrumbAria={dict.common.breadcrumbAria}
       />
 
       <section className="bg-[#F7F5F2]" style={{ paddingTop: 48, paddingBottom: 16 }}>
@@ -33,9 +44,7 @@ export default function ArkalkulatorPage() {
             <div className="bg-[#FEF3C7] border border-[#FCD34D] rounded-card px-6 py-4 flex gap-3 items-start mb-0">
               <Info size={18} className="text-[#92400E] shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-[#92400E] text-sm leading-relaxed">
-                <strong>Fontos:</strong> Az alábbi árak tájékoztató jellegűek és a piaci
-                átlagárakon alapulnak. A pontos ár a helyszíni felmérés után derül ki.
-                Ingyenes felmérésért hívjon minket:{" "}
+                <strong>{t.importantLabel}</strong> {t.disclaimer}{" "}
                 <a href="tel:+36300951686" className="font-semibold underline">
                   +36 30 095 1686
                 </a>
@@ -47,7 +56,7 @@ export default function ArkalkulatorPage() {
 
       <section className="bg-[#F7F5F2]" style={{ paddingTop: 32, paddingBottom: 96 }}>
         <div className="container-custom">
-          <KalkulatorClient />
+          <KalkulatorClient lang={lang} dict={dict.calculator} />
         </div>
       </section>
 
@@ -57,15 +66,14 @@ export default function ArkalkulatorPage() {
           <FadeIn>
             <div className="text-center">
               <h2 className="text-white font-bold text-2xl mb-3">
-                Nem tudja pontosan a méreteket? Semmi gond.
+                {t.bottomTitle}
               </h2>
               <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
-                Kiszállok, megmérem ingyen, és írásos ajánlatot adok.
-                Csak hívjon, vagy töltse ki a kapcsolatfelvételi űrlapot.
+                {t.bottomText}
               </p>
-              <Link href="/kapcsolat" className="btn-white">
+              <Link href={localizePath(lang, "/kapcsolat")} className="btn-white">
                 <ArrowRight size={18} aria-hidden="true" />
-                Ingyenes felmérést kérek
+                {t.bottomCta}
               </Link>
             </div>
           </FadeIn>

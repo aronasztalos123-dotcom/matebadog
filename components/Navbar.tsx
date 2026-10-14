@@ -4,19 +4,29 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Phone, Menu, X } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { localizePath, stripLocale, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const navLinks = [
-  { href: "/", label: "Főoldal" },
-  { href: "/szolgaltatasok", label: "Szolgáltatások" },
-  { href: "/arkalkulator", label: "Árkalkulátor" },
-  { href: "/referenciak", label: "Referenciák" },
-  { href: "/kapcsolat", label: "Kapcsolat" },
-];
+interface NavbarProps {
+  lang: Locale;
+  dict: Dictionary["nav"];
+  callNowNumber: string;
+}
 
-export default function Navbar() {
+export default function Navbar({ lang, dict, callNowNumber }: NavbarProps) {
+  const navLinks = [
+    { href: localizePath(lang, "/"), label: dict.links.home },
+    { href: localizePath(lang, "/szolgaltatasok"), label: dict.links.services },
+    { href: localizePath(lang, "/arkalkulator"), label: dict.links.calculator },
+    { href: localizePath(lang, "/referenciak"), label: dict.links.references },
+    { href: localizePath(lang, "/kapcsolat"), label: dict.links.contact },
+  ];
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
+  // Hungarian pages are rewritten internally to /hu/..., so normalise before comparing
+  const pathname = localizePath(lang, stripLocale(usePathname()));
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -48,7 +58,7 @@ export default function Navbar() {
       >
         <div className="container-custom flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex flex-col leading-none no-underline" aria-label="Máté Tetőfedő főoldal">
+          <Link href={localizePath(lang, "/")} className="flex flex-col leading-none no-underline" aria-label={dict.logoAria}>
             <span className="text-[22px] text-[#1C1917]">
               <span className="font-extrabold relative">
                 Máté
@@ -65,7 +75,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Fő navigáció">
+          <nav className="hidden lg:flex items-center gap-8" aria-label={dict.mainNavAria}>
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -84,27 +94,31 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* CTA button */}
-          <div className="hidden lg:flex items-center">
+          {/* Language switcher + CTA button */}
+          <div className="hidden lg:flex items-center gap-4">
+            <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} />
             <a
               href="tel:+36300951686"
               className="btn-primary text-sm"
-              aria-label="Telefonos kapcsolatfelvétel"
+              aria-label={dict.callAria}
             >
               <Phone size={16} aria-hidden="true" />
-              Hívjon most!
+              {dict.callNow}
             </a>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            className="lg:hidden p-2 text-[#1C1917] rounded-md"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Menü bezárása" : "Menü megnyitása"}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile language switcher + hamburger */}
+          <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} className="hidden sm:flex" />
+            <button
+              className="p-2 text-[#1C1917] rounded-md"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? dict.closeMenu : dict.openMenu}
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -114,9 +128,9 @@ export default function Navbar() {
           className="fixed inset-0 z-40 bg-white flex flex-col pt-[80px]"
           role="dialog"
           aria-modal="true"
-          aria-label="Navigációs menü"
+          aria-label={dict.menuDialogAria}
         >
-          <nav className="flex flex-col gap-1 p-6" aria-label="Mobil navigáció">
+          <nav className="flex flex-col gap-1 p-6" aria-label={dict.mobileNavAria}>
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -132,13 +146,14 @@ export default function Navbar() {
               );
             })}
           </nav>
+          <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} className="px-6 sm:hidden" />
           <div className="p-6 mt-auto">
             <a
               href="tel:+36300951686"
               className="btn-primary w-full justify-center text-center"
             >
               <Phone size={18} aria-hidden="true" />
-              Hívjon most: +36 30 095 1686
+              {callNowNumber}
             </a>
           </div>
         </div>

@@ -1,8 +1,15 @@
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import { localizePath, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-export default function CtaBanner() {
+interface CtaBannerProps {
+  lang: Locale;
+  dict: Dictionary["cta"];
+}
+
+export default function CtaBanner({ lang, dict }: CtaBannerProps) {
   return (
     <section
       className="bg-[#C84B11]"
@@ -17,23 +24,22 @@ export default function CtaBanner() {
               className="text-white font-bold mb-4"
               style={{ fontSize: "clamp(24px, 3vw, 36px)", lineHeight: "1.2" }}
             >
-              Szüksége van tetőfedőre Gödöllő környékén?
+              {dict.title}
             </h2>
             <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto">
-              Hívjon most, vagy töltse ki az árajánlat kérő űrlapot. A felmérés
-              ingyenes, az árajánlat kötelezettségmentes.
+              {dict.text}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="tel:+36300951686"
                 className="btn-white"
-                aria-label="Hívjon most telefonon"
+                aria-label={dict.callAria}
               >
                 <Phone size={18} aria-hidden="true" />
-                Hívjon: +36 30 095 1686
+                {dict.call}
               </a>
-              <Link href="/kapcsolat" className="btn-white-outline">
-                Árajánlatot kérek
+              <Link href={localizePath(lang, "/kapcsolat")} className="btn-white-outline">
+                {dict.quote}
               </Link>
             </div>
           </div>

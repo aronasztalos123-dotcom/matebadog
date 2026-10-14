@@ -1,29 +1,9 @@
 import FadeIn from "@/components/FadeIn";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const steps = [
-  {
-    number: "01",
-    title: "Kapcsolatfelvétel",
-    text: "Hívjon fel vagy töltse ki a kapcsolatfelvételi űrlapot. Általában 24 órán belül visszajelzek.",
-  },
-  {
-    number: "02",
-    title: "Ingyenes felmérés",
-    text: "Kiszállok a helyszínre, megmérem a tetőt, felmérem az állapotát, és meghallgatom az elképzeléseit. Ez teljesen ingyenes.",
-  },
-  {
-    number: "03",
-    title: "Részletes árajánlat",
-    text: "Írásos, tételes árajánlatot adok: anyagok, munkadíj, kellékek   minden tétel külön feltüntetve. Nincs rejtett költség.",
-  },
-  {
-    number: "04",
-    title: "Kivitelezés & átadás",
-    text: "A megbeszélt időpontban elvégzem a munkát. Befejezés után átvesszük, és 5 év garanciát adok az elvégzett munkára.",
-  },
-];
+export default function ProcessSection({ dict }: { dict: Dictionary["process"] }) {
+  const steps = dict.steps.map((step, i) => ({ ...step, number: String(i + 1).padStart(2, "0") }));
 
-export default function ProcessSection() {
   return (
     <section
       className="bg-[#F7F5F2]"
@@ -33,13 +13,13 @@ export default function ProcessSection() {
       <div className="container-custom">
         <FadeIn>
           <div className="text-center max-w-xl mx-auto mb-14">
-            <p className="label-text text-[#C84B11] mb-4">Munkamenet</p>
+            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
             <h2
               id="process-heading"
               className="text-[#1C1917] font-bold"
               style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
             >
-              Egyszerű folyamat, átlátható árazás.
+              {dict.title}
             </h2>
           </div>
         </FadeIn>

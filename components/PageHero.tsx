@@ -10,14 +10,15 @@ interface PageHeroProps {
   title: string;
   subtitle?: string;
   breadcrumbs?: BreadcrumbItem[];
+  breadcrumbAria?: string;
 }
 
-export default function PageHero({ title, subtitle, breadcrumbs }: PageHeroProps) {
+export default function PageHero({ title, subtitle, breadcrumbs, breadcrumbAria }: PageHeroProps) {
   return (
     <section className="bg-[#1C1917] py-16 md:py-20">
       <div className="container-custom">
         {breadcrumbs && (
-          <nav aria-label="Útvonal" className="mb-4">
+          <nav aria-label={breadcrumbAria} className="mb-4">
             <ol className="flex items-center gap-2 flex-wrap">
               {breadcrumbs.map((crumb, i) => (
                 <li key={i} className="flex items-center gap-2">

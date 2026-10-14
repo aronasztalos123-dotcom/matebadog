@@ -1,29 +1,54 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import { notFound } from "next/navigation";
+import "../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { buildAlternates, hasLocale, locales, ogLocales, siteUrl } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
-export const metadata: Metadata = {
-  title: "Máté Tetőfedő & Bádogos   Tetőfedés, Bádogos munkák | Gödöllő",
-  description:
-    "Professzionális tetőfedési, bádogos és ácsszerkezeti munkák Gödöllő és környékén. 15+ év tapasztalat, ingyenes felmérés, 5 év garancia. Hívjon most: +36 30 095 1686",
-  keywords: ["tetőfedő", "bádogos", "Gödöllő", "tetőfelújítás", "ereszcsatorna", "ácsszerkezet"],
-  openGraph: {
-    type: "website",
-    title: "Máté Tetőfedő & Bádogos   Tetőfedés, Bádogos munkák | Gödöllő",
-    description:
-      "Professzionális tetőfedési, bádogos és ácsszerkezeti munkák Gödöllő és környékén. 15+ év tapasztalat, ingyenes felmérés, 5 év garancia.",
-    locale: "hu_HU",
-  },
-};
+export const dynamicParams = false;
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const { meta } = await getDictionary(lang);
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: meta.title,
+    description: meta.description,
+    keywords: meta.keywords,
+    alternates: buildAlternates(lang, "/"),
+    openGraph: {
+      type: "website",
+      title: meta.title,
+      description: meta.ogDescription,
+      locale: ogLocales[lang],
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ lang: string }>;
 }>) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const dict = await getDictionary(lang);
+
   return (
-    <html lang="hu" className="h-full">
+    <html lang={lang} className="h-full">
       <head>
         <script
           type="application/ld+json"
@@ -32,7 +57,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "RoofingContractor",
               name: "Máté Tetőfedő & Bádogos",
-              description: "Tetőfedési, bádogos és ácsszerkezeti munkák Gödöllőn",
+              description: dict.meta.jsonLdDescription,
               telephone: "+36300951686",
               email: "mate.tetofedo@gmail.com",
               address: {
@@ -63,9 +88,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col antialiased">
-        <Navbar />
+        <Navbar lang={lang} dict={dict.nav} callNowNumber={dict.common.callNowNumber} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer lang={lang} dict={dict.footer} navLinks={dict.nav.links} />
       </body>
     </html>
   );

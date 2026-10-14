@@ -3,41 +3,40 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import { fill } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type FilterKey = "osszes" | "csereptet" | "lemeztet" | "badogos" | "acsmu" | "felujitas";
 
-const filters: { key: FilterKey; label: string }[] = [
-  { key: "osszes", label: "Összes" },
-  { key: "csereptet", label: "Cseréptető" },
-  { key: "lemeztet", label: "Lemez tető" },
-  { key: "badogos", label: "Bádogos" },
-  { key: "acsmu", label: "Ácsmunka" },
-  { key: "felujitas", label: "Felújítás" },
-];
+const filterKeys: FilterKey[] = ["osszes", "csereptet", "lemeztet", "badogos", "acsmu", "felujitas"];
 
-interface Project {
+interface ProjectData {
   id: number;
-  title: string;
   location: string;
   year: number;
-  detail: string;
   category: FilterKey;
   color: string;
 }
 
-const projects: Project[] = [
-  { id: 1, title: "Cseréptető csere", location: "Gödöllő, Dózsa György út", year: 2024, detail: "95 nm", category: "csereptet", color: "#C84B11" },
-  { id: 2, title: "Trapézlemez tető", location: "Aszód, Petőfi utca", year: 2024, detail: "140 nm", category: "lemeztet", color: "#57534E" },
-  { id: 3, title: "Ereszcsatorna csere", location: "Pécel", year: 2023, detail: "60 fm", category: "badogos", color: "#1C1917" },
-  { id: 4, title: "Teljes tetőfelújítás", location: "Isaszeg", year: 2023, detail: "120 nm", category: "felujitas", color: "#A33D0D" },
-  { id: 5, title: "Beton cseréptető", location: "Mogyoród", year: 2023, detail: "80 nm", category: "csereptet", color: "#C84B11" },
-  { id: 6, title: "Ácsmunka + cseréptető", location: "Kistarcsa", year: 2023, detail: "110 nm", category: "acsmu", color: "#2C2517" },
-  { id: 7, title: "Hullámlemez garázstető", location: "Gödöllő", year: 2022, detail: "60 nm", category: "lemeztet", color: "#57534E" },
-  { id: 8, title: "Tetőablak beépítés", location: "Bag", year: 2022, detail: "2 db VELUX", category: "badogos", color: "#1C1917" },
-  { id: 9, title: "Kémény körüli tömítés", location: "Vácszentlászló", year: 2022, detail: "", category: "badogos", color: "#A8A29E" },
-  { id: 10, title: "Bitumenes zsindelytető", location: "Gödöllő", year: 2022, detail: "55 nm", category: "csereptet", color: "#C84B11" },
-  { id: 11, title: "Ereszcsatorna + szellőző", location: "Pécel", year: 2021, detail: "", category: "badogos", color: "#57534E" },
-  { id: 12, title: "Teljes csere cseréptetőre", location: "Aszód", year: 2021, detail: "175 nm", category: "felujitas", color: "#A33D0D" },
+interface Project extends ProjectData {
+  title: string;
+  detail: string;
+}
+
+// Titles and details are translated; they come from the dictionary in the same order.
+const projectData: ProjectData[] = [
+  { id: 1, location: "Gödöllő, Dózsa György út", year: 2024, category: "csereptet", color: "#C84B11" },
+  { id: 2, location: "Aszód, Petőfi utca", year: 2024, category: "lemeztet", color: "#57534E" },
+  { id: 3, location: "Pécel", year: 2023, category: "badogos", color: "#1C1917" },
+  { id: 4, location: "Isaszeg", year: 2023, category: "felujitas", color: "#A33D0D" },
+  { id: 5, location: "Mogyoród", year: 2023, category: "csereptet", color: "#C84B11" },
+  { id: 6, location: "Kistarcsa", year: 2023, category: "acsmu", color: "#2C2517" },
+  { id: 7, location: "Gödöllő", year: 2022, category: "lemeztet", color: "#57534E" },
+  { id: 8, location: "Bag", year: 2022, category: "badogos", color: "#1C1917" },
+  { id: 9, location: "Vácszentlászló", year: 2022, category: "badogos", color: "#A8A29E" },
+  { id: 10, location: "Gödöllő", year: 2022, category: "csereptet", color: "#C84B11" },
+  { id: 11, location: "Pécel", year: 2021, category: "badogos", color: "#57534E" },
+  { id: 12, location: "Aszód", year: 2021, category: "felujitas", color: "#A33D0D" },
 ];
 
 function RoofPlaceholderSvg({ color }: { color: string }) {
@@ -55,7 +54,14 @@ function RoofPlaceholderSvg({ color }: { color: string }) {
   );
 }
 
-export default function ReferencjakClient() {
+interface ReferencjakClientProps {
+  dict: Dictionary["references"];
+  photoPlaceholder: string;
+}
+
+export default function ReferencjakClient({ dict, photoPlaceholder }: ReferencjakClientProps) {
+  const projects: Project[] = projectData.map((p, i) => ({ ...p, ...dict.projects[i] }));
+
   const [activeFilter, setActiveFilter] = useState<FilterKey>("osszes");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -68,20 +74,20 @@ export default function ReferencjakClient() {
     <>
       {/* Filter bar */}
       <FadeIn>
-        <div className="flex flex-wrap gap-2 mb-10" role="group" aria-label="Szűrők">
-          {filters.map((f) => (
+        <div className="flex flex-wrap gap-2 mb-10" role="group" aria-label={dict.filtersAria}>
+          {filterKeys.map((key) => (
             <button
-              key={f.key}
+              key={key}
               type="button"
-              onClick={() => setActiveFilter(f.key)}
+              onClick={() => setActiveFilter(key)}
               className={`px-4 py-2 rounded-pill text-sm font-medium transition-all duration-150 border ${
-                activeFilter === f.key
+                activeFilter === key
                   ? "bg-[#C84B11] text-white border-[#C84B11]"
                   : "bg-white text-[#57534E] border-[#E7E5E4] hover:border-[#C84B11] hover:text-[#C84B11]"
               }`}
-              aria-pressed={activeFilter === f.key}
+              aria-pressed={activeFilter === key}
             >
-              {f.label}
+              {dict.filters[key]}
             </button>
           ))}
         </div>
@@ -133,7 +139,7 @@ export default function ReferencjakClient() {
 
       {filtered.length === 0 && (
         <p className="text-center text-[#A8A29E] py-16">
-          Nincs találat ebben a kategóriában.
+          {dict.noResults}
         </p>
       )}
 
@@ -157,11 +163,11 @@ export default function ReferencjakClient() {
                 background: `linear-gradient(135deg, ${selectedProject.color}22 0%, #F7F5F2 100%)`,
               }}
               role="img"
-              aria-label={`${selectedProject.title} munkafotó`}
+              aria-label={fill(dict.photoAria, { title: selectedProject.title })}
             >
               <RoofPlaceholderSvg color={selectedProject.color} />
               <p className="text-[#A8A29E] text-sm mt-3">
-                Ide kerül a munkafotó
+                {photoPlaceholder}
               </p>
             </div>
 
@@ -180,7 +186,7 @@ export default function ReferencjakClient() {
                   type="button"
                   onClick={() => setSelectedProject(null)}
                   className="p-2 text-[#A8A29E] hover:text-[#1C1917] transition-colors rounded-md shrink-0"
-                  aria-label="Bezárás"
+                  aria-label={dict.close}
                 >
                   <X size={20} aria-hidden="true" />
                 </button>

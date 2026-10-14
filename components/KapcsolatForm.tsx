@@ -1,50 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CheckCircle, ChevronDown } from "lucide-react";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const schema = z.object({
-  name: z.string().min(2, "Ez a mező kötelező."),
-  phone: z
-    .string()
-    .min(1, "Ez a mező kötelező.")
-    .regex(/^(\+36|06)\d{8,9}$/, "Adjon meg érvényes telefonszámot. (pl. +36 30 123 4567 vagy 06301234567)"),
-  email: z.string().email("Adjon meg érvényes e-mail címet.").optional().or(z.literal("")),
-  address: z.string().min(3, "Ez a mező kötelező."),
-  workType: z.string().optional(),
-  roofSize: z.string().optional(),
-  message: z.string().optional(),
-  consent: z.literal(true, {
-    error: "Kérjük, fogadja el az adatvédelmi nyilatkozatot.",
-  }),
-});
+// Hungarian numbers (+36 / 06) or any international number, ignoring spaces and separators
+const PHONE_PATTERN = /^(?:(?:\+36|06)\d{8,9}|\+\d{8,15})$/;
 
-type FormValues = z.infer<typeof schema>;
+function createSchema(errors: Dictionary["contactForm"]["errors"]) {
+  return z.object({
+    name: z.string().min(2, errors.required),
+    phone: z
+      .string()
+      .min(1, errors.required)
+      .refine((v) => PHONE_PATTERN.test(v.replace(/[\s\-/().]/g, "")), errors.phone),
+    email: z.string().email(errors.email).optional().or(z.literal("")),
+    address: z.string().min(3, errors.required),
+    workType: z.string().optional(),
+    roofSize: z.string().optional(),
+    message: z.string().optional(),
+    consent: z.literal(true, {
+      error: errors.consent,
+    }),
+  });
+}
 
-const workTypes = [
-  "Kérem, válasszon...",
-  "Tetőfedés (új)",
-  "Tetőfelújítás / csere",
-  "Bádogos munkák",
-  "Ácsszerkezeti munka",
-  "Tetőablak beépítés",
-  "Szigetelés és fóliázás",
-  "Egyéb / nem tudom pontosan",
-];
+type FormValues = z.infer<ReturnType<typeof createSchema>>;
 
-const roofSizes = [
-  "Nem tudom / nem vagyok biztos",
-  "20–40 nm alatt",
-  "40–80 nm",
-  "80–150 nm",
-  "150 nm felett",
-];
+interface KapcsolatFormProps {
+  dict: Dictionary["contactForm"];
+}
 
-export default function KapcsolatForm() {
+export default function KapcsolatForm({ dict }: KapcsolatFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const schema = useMemo(() => createSchema(dict.errors), [dict.errors]);
 
   const {
     register,
@@ -74,10 +66,9 @@ export default function KapcsolatForm() {
     return (
       <div className="py-8 flex flex-col items-center text-center">
         <CheckCircle size={52} className="text-[#15803D] mb-5" aria-hidden="true" />
-        <h3 className="text-xl font-bold text-[#1C1917] mb-3">Üzenet elküldve!</h3>
+        <h3 className="text-xl font-bold text-[#1C1917] mb-3">{dict.successTitle}</h3>
         <p className="text-[#57534E] text-sm leading-relaxed max-w-sm">
-          Köszönjük megkeresését! Általában 24 órán belül visszahívjuk vagy visszaírjuk.
-          Ha sürgős, hívja közvetlenül:{" "}
+          {dict.successText}{" "}
           <a href="tel:+36300951686" className="font-semibold text-[#C84B11]">
             +36 30 095 1686
           </a>
@@ -91,13 +82,13 @@ export default function KapcsolatForm() {
       {/* Name */}
       <div>
         <label htmlFor="name" className={labelClass}>
-          Teljes neve <span className="text-[#C84B11]">*</span>
+          {dict.name} <span className="text-[#C84B11]">*</span>
         </label>
         <input
           id="name"
           type="text"
           autoComplete="name"
-          placeholder="pl. Kovács János"
+          placeholder={dict.namePlaceholder}
           className={inputClass(!!errors.name)}
           {...register("name")}
           aria-invalid={!!errors.name}
@@ -113,13 +104,13 @@ export default function KapcsolatForm() {
       {/* Phone */}
       <div>
         <label htmlFor="phone" className={labelClass}>
-          Telefonszáma <span className="text-[#C84B11]">*</span>
+          {dict.phone} <span className="text-[#C84B11]">*</span>
         </label>
         <input
           id="phone"
           type="tel"
           autoComplete="tel"
-          placeholder="pl. +36 30 123 4567"
+          placeholder={dict.phonePlaceholder}
           className={inputClass(!!errors.phone)}
           {...register("phone")}
           aria-invalid={!!errors.phone}
@@ -135,13 +126,13 @@ export default function KapcsolatForm() {
       {/* Email */}
       <div>
         <label htmlFor="email" className={labelClass}>
-          E-mail címe
+          {dict.email}
         </label>
         <input
           id="email"
           type="email"
           autoComplete="email"
-          placeholder="pl. kovacs.janos@gmail.com"
+          placeholder={dict.emailPlaceholder}
           className={inputClass(!!errors.email)}
           {...register("email")}
           aria-invalid={!!errors.email}
@@ -157,12 +148,12 @@ export default function KapcsolatForm() {
       {/* Address */}
       <div>
         <label htmlFor="address" className={labelClass}>
-          Helyszín / cím <span className="text-[#C84B11]">*</span>
+          {dict.address} <span className="text-[#C84B11]">*</span>
         </label>
         <input
           id="address"
           type="text"
-          placeholder="pl. Pécel, Fő utca 12."
+          placeholder={dict.addressPlaceholder}
           className={inputClass(!!errors.address)}
           {...register("address")}
           aria-invalid={!!errors.address}
@@ -178,7 +169,7 @@ export default function KapcsolatForm() {
       {/* Work type */}
       <div>
         <label htmlFor="workType" className={labelClass}>
-          Elvégzendő munka
+          {dict.workType}
         </label>
         <div className="relative">
           <select
@@ -186,8 +177,9 @@ export default function KapcsolatForm() {
             className={`${inputClass(false)} appearance-none pr-10 cursor-pointer`}
             {...register("workType")}
           >
-            {workTypes.map((opt) => (
-              <option key={opt} value={opt === "Kérem, válasszon..." ? "" : opt}>
+            <option value="">{dict.workTypePlaceholder}</option>
+            {dict.workTypes.map((opt) => (
+              <option key={opt} value={opt}>
                 {opt}
               </option>
             ))}
@@ -199,7 +191,7 @@ export default function KapcsolatForm() {
       {/* Roof size */}
       <div>
         <label htmlFor="roofSize" className={labelClass}>
-          Becsült tető alapterülete
+          {dict.roofSize}
         </label>
         <div className="relative">
           <select
@@ -207,7 +199,7 @@ export default function KapcsolatForm() {
             className={`${inputClass(false)} appearance-none pr-10 cursor-pointer`}
             {...register("roofSize")}
           >
-            {roofSizes.map((opt) => (
+            {dict.roofSizes.map((opt) => (
               <option key={opt} value={opt}>
                 {opt}
               </option>
@@ -220,12 +212,12 @@ export default function KapcsolatForm() {
       {/* Message */}
       <div>
         <label htmlFor="message" className={labelClass}>
-          Üzenete
+          {dict.message}
         </label>
         <textarea
           id="message"
           rows={5}
-          placeholder="Írja le röviden, miben segíthetek..."
+          placeholder={dict.messagePlaceholder}
           className={inputClass(false)}
           {...register("message")}
         />
@@ -242,8 +234,7 @@ export default function KapcsolatForm() {
             aria-describedby={errors.consent ? "consent-error" : undefined}
           />
           <span className="text-[#57534E] text-sm leading-relaxed">
-            Hozzájárulok, hogy adataimat az árajánlat elkészítéséhez felhasználják, és a
-            kapcsolatfelvétel érdekében felvegyék velem a kapcsolatot.{" "}
+            {dict.consent}{" "}
             <span className="text-[#C84B11]">*</span>
           </span>
         </label>
@@ -259,9 +250,9 @@ export default function KapcsolatForm() {
         type="submit"
         disabled={isSubmitting}
         className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
-        aria-label="Üzenet elküldése"
+        aria-label={dict.submitAria}
       >
-        {isSubmitting ? "Küldés..." : "Elküldöm az üzenetet →"}
+        {isSubmitting ? dict.sending : dict.submit}
       </button>
     </form>
   );

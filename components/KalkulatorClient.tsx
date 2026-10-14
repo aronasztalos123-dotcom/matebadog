@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react";
 import { Plus, Trash2, Download, ArrowRight, Info, ChevronDown } from "lucide-react";
 import { formatHuf } from "@/lib/utils";
+import { fill, localizePath, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type RoofType =
   | "ceramia"
@@ -14,18 +16,17 @@ type RoofType =
 
 interface RoofTypeOption {
   value: RoofType;
-  label: string;
   materialPrice: number;
   laborPrice: number;
 }
 
 const roofTypes: RoofTypeOption[] = [
-  { value: "ceramia", label: "Cseréptető (kerámia)", materialPrice: 5800, laborPrice: 4500 },
-  { value: "beton", label: "Cseréptető (beton)", materialPrice: 4200, laborPrice: 4000 },
-  { value: "trapez", label: "Trapézlemez tető", materialPrice: 5200, laborPrice: 3000 },
-  { value: "hullam", label: "Hullámlemez tető", materialPrice: 4000, laborPrice: 2800 },
-  { value: "zsindely", label: "Bitumenes zsindelytető", materialPrice: 3800, laborPrice: 3500 },
-  { value: "sikfedes", label: "Síkfedés (EPDM / bitumen)", materialPrice: 6500, laborPrice: 4200 },
+  { value: "ceramia", materialPrice: 5800, laborPrice: 4500 },
+  { value: "beton", materialPrice: 4200, laborPrice: 4000 },
+  { value: "trapez", materialPrice: 5200, laborPrice: 3000 },
+  { value: "hullam", materialPrice: 4000, laborPrice: 2800 },
+  { value: "zsindely", materialPrice: 3800, laborPrice: 3500 },
+  { value: "sikfedes", materialPrice: 6500, laborPrice: 4200 },
 ];
 
 const FOIL_PRICE = 650;
@@ -36,50 +37,20 @@ const CARPENTRY_LABOR_PRICE = 5500;
 
 type UnitType = "fm" | "db" | "m²" | "csomag";
 
+type PredefinedId = "roofWindow" | "vent" | "chimneyCollar" | "snowGuard" | "ridgeVent";
+
 interface PredefinedItem {
-  id: string;
-  name: string;
+  id: PredefinedId;
   unit: UnitType;
   unitPrice: number;
-  tooltip: string;
 }
 
 const predefinedItems: PredefinedItem[] = [
-  {
-    id: "tetőablak",
-    name: "Tetőablak (VELUX GHL vagy hasonló)",
-    unit: "db",
-    unitPrice: 85000,
-    tooltip: "Szabványos méretű tetőablak beépítése, kerettel és tömítéssel együtt.",
-  },
-  {
-    id: "szellőző",
-    name: "Szellőző elem",
-    unit: "db",
-    unitPrice: 8500,
-    tooltip: "Tetőszellőző a megfelelő páraelvezetés érdekében.",
-  },
-  {
-    id: "kéménygallér",
-    name: "Kéménygallér (tömítő készlet)",
-    unit: "db",
-    unitPrice: 12000,
-    tooltip: "Kémény és tető csatlakozásának vízhatlan tömítése.",
-  },
-  {
-    id: "hócsúszásgátló",
-    name: "Hócsúszásgátló",
-    unit: "fm",
-    unitPrice: 2800,
-    tooltip: "Hó és jég lecsúszásának megakadályozása az ereszpárkányon.",
-  },
-  {
-    id: "gerincszalag",
-    name: "Gerincszellőző szalag",
-    unit: "fm",
-    unitPrice: 1200,
-    tooltip: "A gerinc mentén elhelyezett szellőzőszalag a tető szellőztetéséhez.",
-  },
+  { id: "roofWindow", unit: "db", unitPrice: 85000 },
+  { id: "vent", unit: "db", unitPrice: 8500 },
+  { id: "chimneyCollar", unit: "db", unitPrice: 12000 },
+  { id: "snowGuard", unit: "fm", unitPrice: 2800 },
+  { id: "ridgeVent", unit: "fm", unitPrice: 1200 },
 ];
 
 interface AccessoryRow {
@@ -99,7 +70,18 @@ function generateId() {
   return Math.random().toString(36).slice(2, 9);
 }
 
-export default function KalkulatorClient() {
+const unitTypes: UnitType[] = ["fm", "db", "m²", "csomag"];
+
+interface KalkulatorClientProps {
+  lang: Locale;
+  dict: Dictionary["calculator"];
+}
+
+export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) {
+  const locale = dict.numberLocale;
+  const fmt = useCallback((amount: number) => formatHuf(amount, locale), [locale]);
+  const num = useCallback((amount: number) => amount.toLocaleString(locale), [locale]);
+
   const [area, setArea] = useState<string>("");
   const [roofType, setRoofType] = useState<RoofType>("ceramia");
   const [carpentryEnabled, setCarpentryEnabled] = useState(false);
@@ -181,7 +163,9 @@ export default function KalkulatorClient() {
     const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-    const today = new Date().toLocaleDateString("hu-HU", {
+    const t = dict.pdf;
+    const unit = (u: UnitType) => dict.units[u];
+    const today = new Date().toLocaleDateString(dict.numberLocale, {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -195,7 +179,7 @@ export default function KalkulatorClient() {
     doc.setFontSize(11);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(255);
-    doc.text("Máté Tetőfedő & Bádogos   Tájékoztató árajánlat", 20, 10.5);
+    doc.text(t.title, 20, 10.5);
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(80);
@@ -205,8 +189,8 @@ export default function KalkulatorClient() {
     doc.setTextColor(0);
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(`Tető típusa: ${selectedRoofData.label}`, 20, 28);
-    doc.text(`Tető alapterülete: ${nm} m²`, 20, 35);
+    doc.text(`${t.roofType}: ${dict.roofTypes[selectedRoofData.value]}`, 20, 28);
+    doc.text(`${t.roofArea}: ${nm} m²`, 20, 35);
 
     // Table header
     let y = 46;
@@ -216,23 +200,23 @@ export default function KalkulatorClient() {
     doc.setFontSize(8);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(50);
-    doc.text("Tétel", cols[0], y);
-    doc.text("Mennyiség", cols[1], y);
-    doc.text("Egységár", cols[2], y);
-    doc.text("Összeg", cols[3], y, { align: "right" });
+    doc.text(t.item, cols[0], y);
+    doc.text(t.quantity, cols[1], y);
+    doc.text(t.unitPrice, cols[2], y);
+    doc.text(t.amount, cols[3], y, { align: "right" });
 
     const tableRows: string[][] = [
-      ["Páraáteresztő fólia", `${nm} m²`, `${FOIL_PRICE} Ft/nm`, formatHuf(foilTotal)],
-      ["Lécezés", `${nm} m²`, `${LEC_PRICE} Ft/nm`, formatHuf(lecTotal)],
-      ["Fedőanyag", `${nm} m²`, `${selectedRoofData.materialPrice} Ft/nm`, formatHuf(materialTotal)],
-      ["Tetőfedési munkadíj", `${nm} m²`, `${selectedRoofData.laborPrice} Ft/nm`, formatHuf(laborTotal)],
-      ["Eszközök és kisegédanyagok", `${nm} m²`, `${TOOLS_PRICE} Ft/nm`, formatHuf(toolsTotal)],
+      [t.foil, `${nm} m²`, `${FOIL_PRICE} ${dict.perSqm}`, fmt(foilTotal)],
+      [t.lec, `${nm} m²`, `${LEC_PRICE} ${dict.perSqm}`, fmt(lecTotal)],
+      [t.material, `${nm} m²`, `${selectedRoofData.materialPrice} ${dict.perSqm}`, fmt(materialTotal)],
+      [t.labor, `${nm} m²`, `${selectedRoofData.laborPrice} ${dict.perSqm}`, fmt(laborTotal)],
+      [t.tools, `${nm} m²`, `${TOOLS_PRICE} ${dict.perSqm}`, fmt(toolsTotal)],
     ];
 
     if (carpentryEnabled) {
       tableRows.push(
-        ["Faanyag (ácsmunka)", `${cNm} m²`, `${CARPENTRY_MATERIAL_PRICE} Ft/nm`, formatHuf(carpentryMaterialTotal)],
-        ["Ácsmunka munkadíja", `${cNm} m²`, `${CARPENTRY_LABOR_PRICE} Ft/nm`, formatHuf(carpentryLaborTotal)]
+        [t.carpentryMaterial, `${cNm} m²`, `${CARPENTRY_MATERIAL_PRICE} ${dict.perSqm}`, fmt(carpentryMaterialTotal)],
+        [t.carpentryLabor, `${cNm} m²`, `${CARPENTRY_LABOR_PRICE} ${dict.perSqm}`, fmt(carpentryLaborTotal)]
       );
     }
 
@@ -241,10 +225,10 @@ export default function KalkulatorClient() {
       if (state?.enabled) {
         const qty = parseFloat(state.qty) || 0;
         tableRows.push([
-          item.name,
-          `${qty} ${item.unit}`,
-          `${item.unitPrice.toLocaleString("hu-HU")} Ft/${item.unit}`,
-          formatHuf(qty * item.unitPrice),
+          dict.predefined[item.id].name,
+          `${qty} ${unit(item.unit)}`,
+          `${num(item.unitPrice)} Ft/${unit(item.unit)}`,
+          fmt(qty * item.unitPrice),
         ]);
       }
     });
@@ -253,10 +237,10 @@ export default function KalkulatorClient() {
       if (row.name || row.qty) {
         const rowTotal = (parseFloat(row.qty) || 0) * (parseFloat(row.unitPrice) || 0);
         tableRows.push([
-          row.name || "Kellék",
-          `${row.qty || 0} ${row.unit}`,
+          row.name || t.accessory,
+          `${row.qty || 0} ${unit(row.unit)}`,
           `${parseFloat(row.unitPrice) || 0} Ft`,
-          formatHuf(rowTotal),
+          fmt(rowTotal),
         ]);
       }
     });
@@ -288,22 +272,22 @@ export default function KalkulatorClient() {
     doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(30);
-    doc.text("Végösszeg (nettó):", 20, y);
+    doc.text(t.netTotal, 20, y);
     doc.setTextColor(200, 75, 17);
-    doc.text(formatHuf(subtotal), pageW - 20, y, { align: "right" });
+    doc.text(fmt(subtotal), pageW - 20, y, { align: "right" });
 
     if (vatEnabled) {
       y += 7;
       doc.setFont("helvetica", "normal");
       doc.setTextColor(80);
-      doc.text("ÁFA (+27%):", 20, y);
-      doc.text(formatHuf(vatAmount), pageW - 20, y, { align: "right" });
+      doc.text(t.vat, 20, y);
+      doc.text(fmt(vatAmount), pageW - 20, y, { align: "right" });
       y += 7;
       doc.setFont("helvetica", "bold");
       doc.setTextColor(30);
-      doc.text("Végösszeg (bruttó):", 20, y);
+      doc.text(t.grossTotal, 20, y);
       doc.setTextColor(200, 75, 17);
-      doc.text(formatHuf(total), pageW - 20, y, { align: "right" });
+      doc.text(fmt(total), pageW - 20, y, { align: "right" });
     }
 
     const footerY = doc.internal.pageSize.height - 16;
@@ -312,15 +296,12 @@ export default function KalkulatorClient() {
     doc.setFontSize(7.5);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(130);
-    doc.text(
-      "Ez az árajánlat tájékoztató jellegű. Pontos ár a helyszíni felmérés után adható.",
-      20,
-      footerY
-    );
-    doc.text("Kapcsolat: +36 30 095 1686 | mate.tetofedo@gmail.com", pageW - 20, footerY, { align: "right" });
+    doc.text(t.disclaimer, 20, footerY);
+    doc.text(`${t.contact}: +36 30 095 1686 | mate.tetofedo@gmail.com`, pageW - 20, footerY, { align: "right" });
 
-    doc.save(`mate-tetofedo-arajanlat-${Date.now()}.pdf`);
+    doc.save(`${t.fileName}-${Date.now()}.pdf`);
   }, [
+    dict, fmt, num,
     nm, selectedRoofData, foilTotal, lecTotal, materialTotal, laborTotal, toolsTotal,
     carpentryEnabled, cNm, carpentryMaterialTotal, carpentryLaborTotal,
     predefined, accessories, subtotal, vatEnabled, vatAmount, total,
@@ -339,13 +320,13 @@ export default function KalkulatorClient() {
         {/* SECTION A: Alap adatok */}
         <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
           <h2 className="text-lg font-semibold text-[#1C1917] mb-6 pb-4 border-b border-[#E7E5E4]">
-            A   Alap adatok
+            {dict.sectionA}
           </h2>
 
           <div className="space-y-5">
             <div>
               <label htmlFor="area" className={labelClass}>
-                A tető alapterülete <span className="text-[#C84B11]">*</span>
+                {dict.areaLabel} <span className="text-[#C84B11]">*</span>
               </label>
               <div className="relative">
                 <input
@@ -353,7 +334,7 @@ export default function KalkulatorClient() {
                   type="number"
                   min="0"
                   className={`${inputClass} pr-12`}
-                  placeholder="pl. 80"
+                  placeholder={dict.areaPlaceholder}
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
                   aria-describedby="area-help"
@@ -363,13 +344,13 @@ export default function KalkulatorClient() {
                 </span>
               </div>
               <p id="area-help" className="mt-2 text-xs text-[#A8A29E] leading-relaxed">
-                Adja meg a tető lejtős felületét   nem az alaplaptól mérve, hanem a tényleges fedési felületet. Ha nem tudja pontosan, a felmérés során mérjük meg.
+                {dict.areaHelp}
               </p>
             </div>
 
             <div>
               <label htmlFor="roofType" className={labelClass}>
-                Tető típusa
+                {dict.roofTypeLabel}
               </label>
               <div className="relative">
                 <select
@@ -380,7 +361,7 @@ export default function KalkulatorClient() {
                 >
                   {roofTypes.map((opt) => (
                     <option key={opt.value} value={opt.value}>
-                      {opt.label}
+                      {dict.roofTypes[opt.value]}
                     </option>
                   ))}
                 </select>
@@ -393,51 +374,21 @@ export default function KalkulatorClient() {
         {/* SECTION B: Anyagköltségek */}
         <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
           <h2 className="text-lg font-semibold text-[#1C1917] mb-6 pb-4 border-b border-[#E7E5E4]">
-            B   Anyagköltségek
+            {dict.sectionB}
           </h2>
 
           <div className="space-y-1">
             <div className="grid grid-cols-[1fr_140px] gap-3 text-xs font-medium text-[#A8A29E] uppercase tracking-wide pb-2">
-              <span>Tétel</span>
-              <span className="text-right">Összeg</span>
+              <span>{dict.colItem}</span>
+              <span className="text-right">{dict.colAmount}</span>
             </div>
 
             {[
-              {
-                label: "Páraáteresztő fólia",
-                unitPrice: FOIL_PRICE,
-                total: foilTotal,
-                tooltip: "Tetőfólia, amely megakadályozza a beázást, de engedi a párát távozni.",
-                id: "foil",
-              },
-              {
-                label: "Lécezés (léc + szamárhát)",
-                unitPrice: LEC_PRICE,
-                total: lecTotal,
-                tooltip: "A fólia feletti lécszerkezet, amire a cserép vagy lemez kerül.",
-                id: "lec",
-              },
-              {
-                label: "Fedőanyag (cserép / lemez)",
-                unitPrice: selectedRoofData.materialPrice,
-                total: materialTotal,
-                tooltip: "A tető fedőanyagának becsült ára felszerelve.",
-                id: "material",
-              },
-              {
-                label: "Tetőfedési munkadíj",
-                unitPrice: selectedRoofData.laborPrice,
-                total: laborTotal,
-                tooltip: "A tetőfedési munka díja négyzetméterenként.",
-                id: "labor",
-              },
-              {
-                label: "Eszközök és kisegédanyagok",
-                unitPrice: TOOLS_PRICE,
-                total: toolsTotal,
-                tooltip: "Tartalmazza a szerszámhasználat díját, rögzítőelemeket, tömítőanyagokat és egyéb kisegédanyagokat.",
-                id: "tools",
-              },
+              { ...dict.rows.foil, unitPrice: FOIL_PRICE, total: foilTotal, id: "foil" },
+              { ...dict.rows.lec, unitPrice: LEC_PRICE, total: lecTotal, id: "lec" },
+              { ...dict.rows.material, unitPrice: selectedRoofData.materialPrice, total: materialTotal, id: "material" },
+              { ...dict.rows.labor, unitPrice: selectedRoofData.laborPrice, total: laborTotal, id: "labor" },
+              { ...dict.rows.tools, unitPrice: TOOLS_PRICE, total: toolsTotal, id: "tools" },
             ].map((row) => (
               <div
                 key={row.id}
@@ -450,17 +401,17 @@ export default function KalkulatorClient() {
                       type="button"
                       title={row.tooltip}
                       className="text-[#A8A29E] hover:text-[#57534E] transition-colors"
-                      aria-label={`Tájékoztató: ${row.label}`}
+                      aria-label={fill(dict.infoAria, { label: row.label })}
                     >
                       <Info size={13} aria-hidden="true" />
                     </button>
                   </div>
                   <span className="text-xs text-[#A8A29E] mt-0.5 block">
-                    {row.unitPrice.toLocaleString("hu-HU")} Ft/nm
+                    {num(row.unitPrice)} {dict.perSqm}
                   </span>
                 </div>
                 <p className="text-right text-sm font-semibold text-[#1C1917]">
-                  {formatHuf(row.total)}
+                  {fmt(row.total)}
                 </p>
               </div>
             ))}
@@ -471,10 +422,10 @@ export default function KalkulatorClient() {
         <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E7E5E4]">
             <h2 className="text-lg font-semibold text-[#1C1917]">
-              C   Ácsmunka
+              {dict.sectionC}
             </h2>
             <label className="flex items-center gap-3 cursor-pointer" htmlFor="carpentry-toggle">
-              <span className="text-sm text-[#57534E]">Szükséges ácsmunka is?</span>
+              <span className="text-sm text-[#57534E]">{dict.carpentryToggle}</span>
               <div className="relative">
                 <input
                   id="carpentry-toggle"
@@ -503,7 +454,7 @@ export default function KalkulatorClient() {
             <div className="space-y-5">
               <div>
                 <label htmlFor="carpentryArea" className={labelClass}>
-                  Ácsmunka területe
+                  {dict.carpentryAreaLabel}
                 </label>
                 <div className="relative">
                   <input
@@ -511,7 +462,7 @@ export default function KalkulatorClient() {
                     type="number"
                     min="0"
                     className={`${inputClass} pr-12`}
-                    placeholder="pl. 30"
+                    placeholder={dict.carpentryAreaPlaceholder}
                     value={carpentryArea}
                     onChange={(e) => setCarpentryArea(e.target.value)}
                   />
@@ -520,25 +471,25 @@ export default function KalkulatorClient() {
                   </span>
                 </div>
                 <p className="mt-2 text-xs text-[#A8A29E]">
-                  Ha csak részleges gerendacsere szükséges, adja meg az érintett területet.
+                  {dict.carpentryHelp}
                 </p>
               </div>
 
               <div className="space-y-1">
                 <div className="grid grid-cols-[1fr_140px] gap-3 text-xs font-medium text-[#A8A29E] uppercase tracking-wide pb-2">
-                  <span>Tétel</span>
-                  <span className="text-right">Összeg</span>
+                  <span>{dict.colItem}</span>
+                  <span className="text-right">{dict.colAmount}</span>
                 </div>
 
                 {[
                   {
-                    label: "Faanyag (gerendák, lécek)",
+                    label: dict.carpentryMaterial,
                     unitPrice: CARPENTRY_MATERIAL_PRICE,
                     total: carpentryMaterialTotal,
                     id: "cmat",
                   },
                   {
-                    label: "Ácsmunka munkadíja",
+                    label: dict.carpentryLabor,
                     unitPrice: CARPENTRY_LABOR_PRICE,
                     total: carpentryLaborTotal,
                     id: "clab",
@@ -551,11 +502,11 @@ export default function KalkulatorClient() {
                     <div>
                       <span className="text-sm text-[#1C1917]">{row.label}</span>
                       <span className="text-xs text-[#A8A29E] mt-0.5 block">
-                        {row.unitPrice.toLocaleString("hu-HU")} Ft/nm
+                        {num(row.unitPrice)} {dict.perSqm}
                       </span>
                     </div>
                     <p className="text-right text-sm font-semibold text-[#1C1917]">
-                      {formatHuf(row.total)}
+                      {fmt(row.total)}
                     </p>
                   </div>
                 ))}
@@ -565,7 +516,7 @@ export default function KalkulatorClient() {
 
           {!carpentryEnabled && (
             <p className="text-sm text-[#A8A29E]">
-              Kapcsolja be a kapcsolót, ha ácsszerkezeti munkára is szüksége van.
+              {dict.carpentryOff}
             </p>
           )}
         </div>
@@ -573,16 +524,17 @@ export default function KalkulatorClient() {
         {/* SECTION D: Plusz elemek */}
         <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
           <h2 className="text-lg font-semibold text-[#1C1917] mb-2 pb-4 border-b border-[#E7E5E4]">
-            D   Plusz elemek
+            {dict.sectionD}
           </h2>
           <p className="text-xs text-[#A8A29E] mt-4 mb-6">
-            Jelölje be az opcionális elemeket, amelyek a tetőre kerülnek.
+            {dict.sectionDHelp}
           </p>
 
           {/* Predefined checkbox items */}
           <div className="space-y-3 mb-8">
             {predefinedItems.map((item) => {
               const state = predefined[item.id];
+              const { name, tooltip } = dict.predefined[item.id];
               const itemTotal = state.enabled ? (parseFloat(state.qty) || 0) * item.unitPrice : 0;
               return (
                 <div
@@ -605,19 +557,19 @@ export default function KalkulatorClient() {
                           htmlFor={`pre-${item.id}`}
                           className="text-sm font-medium text-[#1C1917] cursor-pointer"
                         >
-                          {item.name}
+                          {name}
                         </label>
                         <button
                           type="button"
-                          title={item.tooltip}
+                          title={tooltip}
                           className="text-[#A8A29E] hover:text-[#57534E] transition-colors"
-                          aria-label={`Tájékoztató: ${item.name}`}
+                          aria-label={fill(dict.infoAria, { label: name })}
                         >
                           <Info size={13} aria-hidden="true" />
                         </button>
                       </div>
                       <span className="text-xs text-[#A8A29E] mt-0.5 block">
-                        {item.unitPrice.toLocaleString("hu-HU")} Ft/{item.unit}
+                        {num(item.unitPrice)} Ft/{dict.units[item.unit]}
                       </span>
                     </div>
                     {state.enabled && (
@@ -629,14 +581,14 @@ export default function KalkulatorClient() {
                             className={`${inputClass} pr-8 text-center`}
                             value={state.qty}
                             onChange={(e) => updatePredefinedQty(item.id, e.target.value)}
-                            aria-label={`${item.name} mennyisége`}
+                            aria-label={fill(dict.qtyAria, { name })}
                           />
                           <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A8A29E] text-xs pointer-events-none">
-                            {item.unit}
+                            {dict.units[item.unit]}
                           </span>
                         </div>
                         <span className="text-sm font-semibold text-[#1C1917] w-28 text-right whitespace-nowrap">
-                          {formatHuf(itemTotal)}
+                          {fmt(itemTotal)}
                         </span>
                       </div>
                     )}
@@ -650,18 +602,18 @@ export default function KalkulatorClient() {
           <div>
             <h3 className="text-sm font-semibold text-[#57534E] mb-4 flex items-center gap-3">
               <span className="block w-6 h-px bg-[#E7E5E4]" aria-hidden="true" />
-              Egyéb / egyedi kellék hozzáadása
+              {dict.customHeading}
               <span className="block flex-1 h-px bg-[#E7E5E4]" aria-hidden="true" />
             </h3>
 
             {accessories.length > 0 && (
               <div className="space-y-3 mb-3">
                 <div className="hidden sm:grid grid-cols-[2fr_80px_80px_100px_80px_32px] gap-2 text-xs font-medium text-[#A8A29E] uppercase tracking-wide">
-                  <span>Megnevezés</span>
-                  <span>Menny.</span>
-                  <span>Egység</span>
-                  <span>Egységár</span>
-                  <span className="text-right">Összeg</span>
+                  <span>{dict.colName}</span>
+                  <span>{dict.colQty}</span>
+                  <span>{dict.colUnit}</span>
+                  <span>{dict.colUnitPrice}</span>
+                  <span className="text-right">{dict.colAmount}</span>
                   <span />
                 </div>
 
@@ -675,30 +627,31 @@ export default function KalkulatorClient() {
                       <input
                         type="text"
                         className={inputClass}
-                        placeholder="pl. Páracsapda"
+                        placeholder={dict.namePlaceholder}
                         value={row.name}
                         onChange={(e) => updateAccessory(row.id, "name", e.target.value)}
-                        aria-label="Kellék megnevezése"
+                        aria-label={dict.nameAria}
                       />
                       <input
                         type="number"
                         min="0"
                         className={inputClass}
-                        placeholder="pl. 12"
+                        placeholder={dict.qtyPlaceholder}
                         value={row.qty}
                         onChange={(e) => updateAccessory(row.id, "qty", e.target.value)}
-                        aria-label="Mennyiség"
+                        aria-label={dict.qtyAriaShort}
                       />
                       <select
                         className={`${inputClass} cursor-pointer`}
                         value={row.unit}
                         onChange={(e) => updateAccessory(row.id, "unit", e.target.value as UnitType)}
-                        aria-label="Egység"
+                        aria-label={dict.colUnit}
                       >
-                        <option value="fm">fm</option>
-                        <option value="db">db</option>
-                        <option value="m²">m²</option>
-                        <option value="csomag">csomag</option>
+                        {unitTypes.map((u) => (
+                          <option key={u} value={u}>
+                            {dict.units[u]}
+                          </option>
+                        ))}
                       </select>
                       <input
                         type="number"
@@ -707,16 +660,16 @@ export default function KalkulatorClient() {
                         placeholder="Ft"
                         value={row.unitPrice}
                         onChange={(e) => updateAccessory(row.id, "unitPrice", e.target.value)}
-                        aria-label="Egységár"
+                        aria-label={dict.colUnitPrice}
                       />
                       <p className="text-right text-sm font-semibold text-[#1C1917] sm:block hidden">
-                        {formatHuf(rowTotal)}
+                        {fmt(rowTotal)}
                       </p>
                       <button
                         type="button"
                         onClick={() => removeAccessory(row.id)}
                         className="text-[#A8A29E] hover:text-red-500 transition-colors p-1 rounded"
-                        aria-label="Sor törlése"
+                        aria-label={dict.deleteRow}
                       >
                         <Trash2 size={16} aria-hidden="true" />
                       </button>
@@ -732,7 +685,7 @@ export default function KalkulatorClient() {
               className="mt-2 flex items-center gap-2 text-[#C84B11] text-sm font-semibold hover:text-[#A33D0D] transition-colors border border-[#C84B11] rounded-[6px] px-4 py-2 hover:bg-[#FBE9E0]"
             >
               <Plus size={16} aria-hidden="true" />
-              Egyedi kellék hozzáadása
+              {dict.addCustom}
             </button>
           </div>
         </div>
@@ -743,55 +696,55 @@ export default function KalkulatorClient() {
         <div
           className="bg-white rounded-card border border-[#E7E5E4] overflow-hidden"
           style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 12px 32px rgba(0,0,0,0.08)" }}
-          aria-label="Becsült költségek összesítője"
+          aria-label={dict.summaryAria}
         >
           <div className="h-1 bg-[#C84B11]" aria-hidden="true" />
 
           <div className="p-6">
             <h2 className="text-lg font-semibold text-[#1C1917] mb-6">
-              Becsült költségek
+              {dict.summaryTitle}
             </h2>
 
             <div className="space-y-3">
-              <SummaryLine label="Fólia anyag" value={foilTotal} />
-              <SummaryLine label="Lécezés" value={lecTotal} />
-              <SummaryLine label="Fedőanyag" value={materialTotal} />
-              <SummaryLine label="Tetőfedési munkadíj" value={laborTotal} />
-              <SummaryLine label="Eszközök és kisegédanyagok" value={toolsTotal} />
+              <SummaryLine label={dict.summary.foil} value={fmt(foilTotal)} />
+              <SummaryLine label={dict.summary.lec} value={fmt(lecTotal)} />
+              <SummaryLine label={dict.summary.material} value={fmt(materialTotal)} />
+              <SummaryLine label={dict.summary.labor} value={fmt(laborTotal)} />
+              <SummaryLine label={dict.summary.tools} value={fmt(toolsTotal)} />
 
               {carpentryEnabled && (
                 <>
                   <div className="border-t border-[#E7E5E4] pt-3 mt-1" />
-                  <SummaryLine label="Ácsmunka anyag" value={carpentryMaterialTotal} />
-                  <SummaryLine label="Ácsmunka munkadíja" value={carpentryLaborTotal} />
+                  <SummaryLine label={dict.summary.carpentryMaterial} value={fmt(carpentryMaterialTotal)} />
+                  <SummaryLine label={dict.summary.carpentryLabor} value={fmt(carpentryLaborTotal)} />
                 </>
               )}
 
               <div className="border-t border-[#E7E5E4] pt-3 mt-1" />
-              <SummaryLine label="Plusz elemek" value={predefinedTotal} />
-              <SummaryLine label="Egyéb kellékek" value={customAccessoriesTotal} />
+              <SummaryLine label={dict.summary.extras} value={fmt(predefinedTotal)} />
+              <SummaryLine label={dict.summary.otherAccessories} value={fmt(customAccessoriesTotal)} />
               <div className="flex justify-between items-center text-sm font-semibold border-t border-[#E7E5E4] pt-2 mt-1">
-                <span className="text-[#57534E]">Kellékek összesen</span>
-                <span className="text-[#1C1917]">{formatHuf(accessoriesTotal)}</span>
+                <span className="text-[#57534E]">{dict.summary.accessoriesTotal}</span>
+                <span className="text-[#1C1917]">{fmt(accessoriesTotal)}</span>
               </div>
             </div>
 
             {/* Total */}
             <div className="border-t-2 border-[#E7E5E4] mt-4 pt-4">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-[#1C1917] text-base">VÉGÖSSZEG</span>
-                <span className="font-bold text-[#C84B11] text-xl">{formatHuf(subtotal)}</span>
+                <span className="font-bold text-[#1C1917] text-base">{dict.grandTotal}</span>
+                <span className="font-bold text-[#C84B11] text-xl">{fmt(subtotal)}</span>
               </div>
 
               {vatEnabled && (
                 <>
                   <div className="flex justify-between items-center mt-2">
-                    <span className="text-sm text-[#57534E]">ÁFA (+27%)</span>
-                    <span className="text-sm font-medium text-[#57534E]">{formatHuf(vatAmount)}</span>
+                    <span className="text-sm text-[#57534E]">{dict.vat}</span>
+                    <span className="text-sm font-medium text-[#57534E]">{fmt(vatAmount)}</span>
                   </div>
                   <div className="flex justify-between items-center mt-1">
-                    <span className="font-bold text-[#1C1917] text-base">Végösszeg ÁFÁ-val</span>
-                    <span className="font-bold text-[#C84B11] text-xl">{formatHuf(total)}</span>
+                    <span className="font-bold text-[#1C1917] text-base">{dict.grandTotalVat}</span>
+                    <span className="font-bold text-[#C84B11] text-xl">{fmt(total)}</span>
                   </div>
                 </>
               )}
@@ -802,7 +755,7 @@ export default function KalkulatorClient() {
               htmlFor="vat-toggle"
               className="flex items-center justify-between mt-4 cursor-pointer"
             >
-              <span className="text-sm text-[#57534E]">ÁFA megjelenítése (+27%)</span>
+              <span className="text-sm text-[#57534E]">{dict.vatToggle}</span>
               <div className="relative">
                 <input
                   id="vat-toggle"
@@ -827,28 +780,27 @@ export default function KalkulatorClient() {
             </label>
 
             <p className="text-xs text-[#A8A29E] mt-3 leading-relaxed">
-              Az ár tartalmazza az anyagot és a munkadíjat, de nem tartalmaz ÁFÁ-t.
-              Számlás teljesítés esetén +27% ÁFA kerül felszámításra.
+              {dict.vatNote}
             </p>
 
             {/* Action buttons */}
             <div className="space-y-3 mt-6">
               <a
-                href="/kapcsolat"
+                href={localizePath(lang, "/kapcsolat")}
                 className="btn-primary w-full justify-center"
-                aria-label="Ajánlatkérési oldal megnyitása"
+                aria-label={dict.requestQuoteAria}
               >
                 <ArrowRight size={16} aria-hidden="true" />
-                Ajánlatot kérek
+                {dict.requestQuote}
               </a>
               <button
                 type="button"
                 onClick={handlePdfDownload}
                 className="btn-secondary w-full justify-center"
-                aria-label="Árajánlat letöltése PDF formátumban"
+                aria-label={dict.downloadPdfAria}
               >
                 <Download size={16} aria-hidden="true" />
-                Letöltés PDF-ben
+                {dict.downloadPdf}
               </button>
             </div>
           </div>
@@ -858,11 +810,11 @@ export default function KalkulatorClient() {
   );
 }
 
-function SummaryLine({ label, value }: { label: string; value: number }) {
+function SummaryLine({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-[#57534E]">{label}</span>
-      <span className="font-medium text-[#1C1917]">{formatHuf(value)}</span>
+      <span className="font-medium text-[#1C1917]">{value}</span>
     </div>
   );
 }

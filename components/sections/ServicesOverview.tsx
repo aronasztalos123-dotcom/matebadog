@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import { localizePath, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const services = [
+const serviceIcons = [
   {
     id: "tetofedes",
     icon: (
@@ -12,17 +14,6 @@ const services = [
         <rect x="14" y="26" width="8" height="6" rx="1" fill="currentColor" opacity="0.6" />
       </svg>
     ),
-    title: "Tetőfedés",
-    description:
-      "Legyen szó új tető kialakításáról vagy a régi csere, mindent megoldunk profi anyagokkal és precíz kivitelezéssel.",
-    bullets: [
-      "Cseréptető (kerámia és beton cserép)",
-      "Trapézlemez tető",
-      "Hullámlemez tető",
-      "Bitumenes zsindelytető",
-      "Síkfedés (EPDM, bitumen)",
-      "Tetőfelújítás és részleges javítás",
-    ],
   },
   {
     id: "badogos",
@@ -34,17 +25,6 @@ const services = [
         <rect x="16" y="16" width="4" height="12" rx="1" fill="currentColor" opacity="0.4" />
       </svg>
     ),
-    title: "Bádogos munkák",
-    description:
-      "Az esővíz elvezetésétől az egyedi lemez megmunkálásig   a bádogos részletek nem csak esztétikai, hanem védelmi szerepet is betöltenek.",
-    bullets: [
-      "Ereszcsatorna rendszer szerelése (PVC és alumínium)",
-      "Szellőzők, tetőátvezetések",
-      "Villámszigetelés csatlakozások",
-      "Oromlemezek, takarólemezek",
-      "Kéménygallér és esővédő",
-      "Egyedi fémlemez megmunkálás",
-    ],
   },
   {
     id: "acsszerkezet",
@@ -58,17 +38,6 @@ const services = [
         <line x1="8" y1="14" x2="28" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
-    title: "Ácsszerkezet",
-    description:
-      "A tető tartószerkezete az alap. Ha a szarufák, szelemnek vagy egyéb faszerkezet sérült, azt időben kell kezelni.",
-    bullets: [
-      "Teljes ácsszerkezet tervezés és kivitelezés",
-      "Részleges faszerkezet csere (korhadt gerendák)",
-      "Szarufacsere és megerősítés",
-      "Tetőtér beépítés előkészítése",
-      "Héjazat alatti deszkazás",
-      "Szélléc és ereszléc felszerelés",
-    ],
   },
   {
     id: "szigeteles",
@@ -79,21 +48,17 @@ const services = [
         <rect x="4" y="24" width="28" height="5" rx="2" fill="currentColor" opacity="0.3" />
       </svg>
     ),
-    title: "Szigetelés & egyéb",
-    description:
-      "A megfelelő fólia és lécezés megvédi a tetőszerkezetet a nedvességtől, és energiahatékonyabbá teszi az otthonát.",
-    bullets: [
-      "Párazáró és páraáteresztő fólia fektetés",
-      "Lécezés (lécrács kiosztás)",
-      "Tetőablak beépítés (VELUX és egyéb)",
-      "Hővédő fólia fektetés",
-      "Kémény körüli szigetelés és tömítés",
-      "Esővédő hálók és szél elleni védelem",
-    ],
   },
-];
+] as const;
 
-export default function ServicesOverview() {
+interface ServicesOverviewProps {
+  lang: Locale;
+  dict: Dictionary["services"];
+}
+
+export default function ServicesOverview({ lang, dict }: ServicesOverviewProps) {
+  const services = serviceIcons.map((s) => ({ ...s, ...dict.items[s.id] }));
+
   return (
     <section
       id="szolgaltatasok"
@@ -104,17 +69,16 @@ export default function ServicesOverview() {
       <div className="container-custom">
         <FadeIn>
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <p className="label-text text-[#C84B11] mb-4">Szolgáltatások</p>
+            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
             <h2
               id="services-heading"
               className="text-[#1C1917] font-bold mb-4"
               style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
             >
-              Mindent elvégzek, ami a tető körül szükséges.
+              {dict.title}
             </h2>
             <p className="text-[#57534E] text-lg">
-              Tetőfedéstől a bádogos részletekig, az ácsszerkezettől a szigetelésig  
-              egy kézből, egy vállalkozástól.
+              {dict.subtitle}
             </p>
           </div>
         </FadeIn>
@@ -133,10 +97,10 @@ export default function ServicesOverview() {
                   {service.icon}
                 </div>
                 <h3 className="text-[#1C1917] text-xl font-semibold mb-3">
-                  {service.title}
+                  {service.cardTitle}
                 </h3>
                 <p className="text-[#57534E] text-sm leading-relaxed mb-5">
-                  {service.description}
+                  {service.cardDescription}
                 </p>
                 <ul className="space-y-2 mb-6">
                   {service.bullets.map((bullet) => (
@@ -153,10 +117,10 @@ export default function ServicesOverview() {
                   ))}
                 </ul>
                 <Link
-                  href={`/szolgaltatasok#${service.id}`}
+                  href={`${localizePath(lang, "/szolgaltatasok")}#${service.id}`}
                   className="inline-flex items-center gap-1.5 text-[#C84B11] text-sm font-semibold group-hover:gap-2.5 transition-all duration-200"
                 >
-                  Részletek
+                  {dict.details}
                   <ArrowRight size={15} aria-hidden="true" />
                 </Link>
               </article>

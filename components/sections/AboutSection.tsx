@@ -1,14 +1,8 @@
 import { Check } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const checkItems = [
-  "Mindig személyes kivitelezés   nem adok ki alvállalkozónak",
-  "Ingyenes helyszíni felmérés és árajánlat",
-  "5 év garanciát vállalok az elvégzett munkára",
-  "Számlás teljesítés, szerződéssel",
-];
-
-export default function AboutSection() {
+export default function AboutSection({ dict }: { dict: Dictionary["about"] }) {
   return (
     <section
       id="rolam"
@@ -20,37 +14,25 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text column */}
           <FadeIn>
-            <p className="label-text text-[#C84B11] mb-4">Rólam</p>
+            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
             <h2
               id="about-heading"
               className="text-[#1C1917] font-bold mb-8"
               style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
             >
-              Kétkezi munkával,
+              {dict.titleLine1}
               <br />
-              becsületes áron.
+              {dict.titleLine2}
             </h2>
 
             <div className="space-y-5 text-[#57534E] text-base leading-relaxed mb-10">
-              <p>
-                Sóki Máté vagyok, tetőfedő és bádogos mester. 2009 óta foglalkozom tetők
-                tervezésével, felújításával és kivitelezésével. Gödöllőn születtem, itt élek,
-                és az itteni ügyfeleim ajánlásából él a vállalkozásom.
-              </p>
-              <p>
-                Nem alvállalkozókkal dolgozom   én magam végzem a munkát, vagy egy
-                megbízható, állandó segédemmel. Ez azt jelenti, hogy mindig tudom, mi
-                történik a tetőn, és személyesen állok jót a minőségért.
-              </p>
-              <p>
-                Felmérésre kiszállok az egész körzetbe: Gödöllő, Aszód, Bag, Pécel,
-                Isaszeg, Kistarcsa, Mogyoród, Vácszentlászló. A felmérés és az árajánlat
-                ingyenes és kötelezettségmentes.
-              </p>
+              {dict.paragraphs.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
             </div>
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {checkItems.map((item) => (
+              {dict.checkItems.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span
                     className="w-6 h-6 rounded-full bg-[#FBE9E0] flex items-center justify-center shrink-0 mt-0.5"
@@ -68,7 +50,7 @@ export default function AboutSection() {
           <FadeIn delay={0.15}>
             <div
               className="rounded-card overflow-hidden bg-[#2C2517] flex items-center justify-center aspect-[4/5] relative"
-              aria-label="Tetőfedő mester portréja"
+              aria-label={dict.portraitAria}
             >
               <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
                 <svg
@@ -84,7 +66,7 @@ export default function AboutSection() {
                   <rect x="30" y="55" width="20" height="15" rx="2" fill="#1C1917" />
                 </svg>
                 <p className="text-white/30 text-sm">
-                  Ide kerül a portré- vagy munkafotó
+                  {dict.portraitPlaceholder}
                 </p>
               </div>
 

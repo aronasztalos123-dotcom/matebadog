@@ -1,24 +1,33 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { localizePath, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const navLinks = [
-  { href: "/", label: "Főoldal" },
-  { href: "/szolgaltatasok", label: "Szolgáltatások" },
-  { href: "/arkalkulator", label: "Árkalkulátor" },
-  { href: "/referenciak", label: "Referenciák" },
-  { href: "/kapcsolat", label: "Kapcsolat" },
-];
+interface FooterProps {
+  lang: Locale;
+  dict: Dictionary["footer"];
+  navLinks: Dictionary["nav"]["links"];
+}
 
-const serviceLinks = [
-  { href: "/szolgaltatasok#tetofedes", label: "Tetőfedés" },
-  { href: "/szolgaltatasok#badogos", label: "Bádogos munkák" },
-  { href: "/szolgaltatasok#acsszerkezet", label: "Ácsszerkezet" },
-  { href: "/szolgaltatasok#szigeteles", label: "Szigetelés" },
-  { href: "/szolgaltatasok#tetofedes", label: "Tetőfelújítás" },
-  { href: "/szolgaltatasok#szigeteles", label: "Tetőablak beépítés" },
-];
+export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
+  const navLinks = [
+    { href: localizePath(lang, "/"), label: labels.home },
+    { href: localizePath(lang, "/szolgaltatasok"), label: labels.services },
+    { href: localizePath(lang, "/arkalkulator"), label: labels.calculator },
+    { href: localizePath(lang, "/referenciak"), label: labels.references },
+    { href: localizePath(lang, "/kapcsolat"), label: labels.contact },
+  ];
 
-export default function Footer() {
+  const services = localizePath(lang, "/szolgaltatasok");
+  const serviceLinks = [
+    { href: `${services}#tetofedes`, label: dict.serviceLinks.roofing },
+    { href: `${services}#badogos`, label: dict.serviceLinks.tinsmith },
+    { href: `${services}#acsszerkezet`, label: dict.serviceLinks.carpentry },
+    { href: `${services}#szigeteles`, label: dict.serviceLinks.insulation },
+    { href: `${services}#tetofedes`, label: dict.serviceLinks.renovation },
+    { href: `${services}#szigeteles`, label: dict.serviceLinks.roofWindow },
+  ];
+
   return (
     <footer className="bg-[#1C1917] text-white" role="contentinfo">
       <div className="container-custom py-16">
@@ -33,27 +42,27 @@ export default function Footer() {
               </p>
             </div>
             <p className="text-[#A8A29E] text-sm leading-relaxed mb-6">
-              Minőségi tetőmunkák Gödöllő és környékén.
+              {dict.tagline}
             </p>
             <a
               href="https://maps.google.com/?q=Gödöllő+Pest+megye+Hungary"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[#A8A29E] hover:text-white text-sm transition-colors"
-              aria-label="Megtekintés Google Térképen"
+              aria-label={dict.mapsAria}
             >
               <MapPin size={16} aria-hidden="true" />
-              Google Térképen
+              {dict.maps}
             </a>
             <p className="text-[#57534E] text-xs mt-8">
-              © 2024 Máté Tetőfedő &amp; Bádogos. Minden jog fenntartva.
+              © 2024 Máté Tetőfedő &amp; Bádogos. {dict.rights}
             </p>
           </div>
 
           {/* Column 2: Navigation */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
-              Navigáció
+              {dict.navHeading}
             </h3>
             <ul className="space-y-3">
               {navLinks.map((link) => (
@@ -72,7 +81,7 @@ export default function Footer() {
           {/* Column 3: Services */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
-              Szolgáltatások
+              {dict.servicesHeading}
             </h3>
             <ul className="space-y-3">
               {serviceLinks.map((link) => (
@@ -91,7 +100,7 @@ export default function Footer() {
           {/* Column 4: Contact */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
-              Elérhetőség
+              {dict.contactHeading}
             </h3>
             <ul className="space-y-4">
               <li>
@@ -115,15 +124,15 @@ export default function Footer() {
               <li>
                 <div className="flex items-start gap-3 text-[#A8A29E] text-sm">
                   <MapPin size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
-                  Gödöllő, Pest megye
+                  {dict.location}
                 </div>
               </li>
               <li>
                 <div className="flex items-start gap-3 text-[#A8A29E] text-sm">
                   <Clock size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
                   <div>
-                    <p>Hétfő–Péntek: 7:00–18:00</p>
-                    <p>Szombat: 8:00–13:00</p>
+                    <p>{dict.weekdays}</p>
+                    <p>{dict.saturday}</p>
                   </div>
                 </div>
               </li>
@@ -136,13 +145,13 @@ export default function Footer() {
       <div className="border-t border-[#2C2517]">
         <div className="container-custom py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
           <Link
-            href="/adatvedelem"
+            href={localizePath(lang, "/adatvedelem")}
             className="text-[#57534E] hover:text-[#A8A29E] text-xs transition-colors"
           >
-            Adatvédelmi tájékoztató
+            {dict.privacy}
           </Link>
           <span className="text-[#57534E] text-xs">
-            Weboldal tervezve: Máté Tetőfedő &amp; Bádogos
+            {dict.designedBy}
           </span>
         </div>
       </div>

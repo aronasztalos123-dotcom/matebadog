@@ -1,33 +1,17 @@
 import FadeIn from "@/components/FadeIn";
 import { Star } from "lucide-react";
+import { fill } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const testimonials = [
-  {
-    stars: 5,
-    quote:
-      "Nagyon precíz és megbízható mester. Pontosan jött ki, pontosan annyit számolt fel, amennyit mondott. A szomszédoknak is ajánlottam.",
-    name: "Kovács Péterné",
-    location: "Gödöllő",
-  },
-  {
-    stars: 5,
-    quote:
-      "Teljesen felújítottuk a tetőt   cseréptől az ereszcsatornáig. Egy hét alatt végzett, és azóta nem volt egyetlen beázás sem. Nagyon elégedett vagyok.",
-    name: "Tóth János",
-    location: "Isaszeg",
-  },
-  {
-    stars: 5,
-    quote:
-      "Vihar után kaptam a számot. Másnap már kint volt, megcsinálta a sürgős javítást, és azután visszajött az állandó megoldással is. Profi munka.",
-    name: "Balogh Éva",
-    location: "Pécel",
-  },
+const reviewers = [
+  { stars: 5, name: "Kovács Péterné", location: "Gödöllő" },
+  { stars: 5, name: "Tóth János", location: "Isaszeg" },
+  { stars: 5, name: "Balogh Éva", location: "Pécel" },
 ];
 
-function StarRow({ count }: { count: number }) {
+function StarRow({ count, label }: { count: number; label: string }) {
   return (
-    <div className="flex gap-1 mb-4" aria-label={`${count} csillag az 5-ből`}>
+    <div className="flex gap-1 mb-4" aria-label={fill(label, { count })}>
       {Array.from({ length: count }).map((_, i) => (
         <Star key={i} size={16} className="fill-[#C84B11] text-[#C84B11]" aria-hidden="true" />
       ))}
@@ -35,7 +19,9 @@ function StarRow({ count }: { count: number }) {
   );
 }
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ dict }: { dict: Dictionary["testimonials"] }) {
+  const testimonials = reviewers.map((r, i) => ({ ...r, quote: dict.quotes[i] }));
+
   return (
     <section
       className="bg-white"
@@ -45,13 +31,13 @@ export default function TestimonialsSection() {
       <div className="container-custom">
         <FadeIn>
           <div className="text-center max-w-xl mx-auto mb-14">
-            <p className="label-text text-[#C84B11] mb-4">Vélemények</p>
+            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
             <h2
               id="testimonials-heading"
               className="text-[#1C1917] font-bold"
               style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
             >
-              Mit mondanak az ügyfeleink?
+              {dict.title}
             </h2>
           </div>
         </FadeIn>
@@ -63,7 +49,7 @@ export default function TestimonialsSection() {
                 className="bg-white border border-[#E7E5E4] rounded-card p-8 min-w-[280px] md:min-w-0"
                 style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)" }}
               >
-                <StarRow count={t.stars} />
+                <StarRow count={t.stars} label={dict.starsAria} />
                 <blockquote className="text-[#57534E] text-sm leading-relaxed mb-6">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
@@ -78,7 +64,7 @@ export default function TestimonialsSection() {
 
         <FadeIn>
           <p className="text-center text-[#A8A29E] text-sm mt-10">
-            Valódi Google-vélemények alapján · Átlag: 5.0 ★
+            {dict.footnote}
           </p>
         </FadeIn>
       </div>
