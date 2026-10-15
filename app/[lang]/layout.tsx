@@ -1,10 +1,24 @@
 import type { Metadata } from "next";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { buildAlternates, hasLocale, locales, ogLocales, siteUrl } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+
+const archivo = Archivo({
+  subsets: ["latin", "latin-ext"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const dynamicParams = false;
 
@@ -48,7 +62,7 @@ export default async function RootLayout({
   const dict = await getDictionary(lang);
 
   return (
-    <html lang={lang} className="h-full">
+    <html lang={lang} className={`h-full ${archivo.variable} ${jetbrains.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -62,26 +76,21 @@ export default async function RootLayout({
               email: "mate.tetofedo@gmail.com",
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Gödöllő",
-                addressRegion: "Pest",
+                addressLocality: "Budapest",
                 addressCountry: "HU",
               },
               geo: {
                 "@type": "GeoCoordinates",
-                latitude: 47.6394674,
-                longitude: 19.9667394,
+                latitude: 47.4979,
+                longitude: 19.0402,
               },
               openingHours: ["Mo-Fr 07:00-18:00", "Sa 08:00-13:00"],
               priceRange: "$$",
               areaServed: [
-                "Gödöllő",
-                "Aszód",
-                "Pécel",
-                "Isaszeg",
-                "Kistarcsa",
-                "Mogyoród",
-                "Bag",
-                "Vácszentlászló",
+                { "@type": "Country", name: "Hungary" },
+                { "@type": "Country", name: "Austria" },
+                { "@type": "Country", name: "Slovakia" },
+                { "@type": "Country", name: "Germany" },
               ],
             }),
           }}

@@ -37,13 +37,13 @@ export default async function ArkalkulatorPage({ params }: PageParams) {
         breadcrumbAria={dict.common.breadcrumbAria}
       />
 
-      <section className="bg-[#F7F5F2]" style={{ paddingTop: 48, paddingBottom: 16 }}>
+      <section className="bg-[#F1F3F4]" style={{ paddingTop: 64, paddingBottom: 16 }}>
         <div className="container-custom">
           {/* Disclaimer */}
           <FadeIn>
-            <div className="bg-[#FEF3C7] border border-[#FCD34D] rounded-card px-6 py-4 flex gap-3 items-start mb-0">
-              <Info size={18} className="text-[#92400E] shrink-0 mt-0.5" aria-hidden="true" />
-              <p className="text-[#92400E] text-sm leading-relaxed">
+            <div className="mb-0 flex items-start gap-3 rounded-2xl border border-[#F3C9B3] border-l-4 border-l-[#C84B11] bg-[#FBE9E0] px-6 py-4">
+              <Info size={18} className="mt-0.5 shrink-0 text-[#C84B11]" aria-hidden="true" />
+              <p className="text-sm leading-relaxed text-[#5A2208]">
                 <strong>{t.importantLabel}</strong> {t.disclaimer}{" "}
                 <a href="tel:+36300951686" className="font-semibold underline">
                   +36 30 095 1686
@@ -54,7 +54,7 @@ export default async function ArkalkulatorPage({ params }: PageParams) {
         </div>
       </section>
 
-      <section className="bg-[#F7F5F2]" style={{ paddingTop: 32, paddingBottom: 96 }}>
+      <section className="bg-[#F1F3F4]" style={{ paddingTop: 32, paddingBottom: 96 }}>
         <div className="container-custom">
           <KalkulatorClient lang={lang} dict={dict.calculator} />
         </div>
@@ -65,7 +65,7 @@ export default async function ArkalkulatorPage({ params }: PageParams) {
         <div className="container-custom">
           <FadeIn>
             <div className="text-center">
-              <h2 className="text-white font-bold text-2xl mb-3">
+              <h2 className="font-display mb-3 text-[clamp(26px,3vw,36px)] leading-tight text-white">
                 {t.bottomTitle}
               </h2>
               <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">

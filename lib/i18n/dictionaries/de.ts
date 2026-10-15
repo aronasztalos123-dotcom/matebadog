@@ -13,7 +13,6 @@ const de: Dictionary = {
   common: {
     home: "Startseite",
     breadcrumbAria: "Brotkrumennavigation",
-    photoPlaceholder: "Hier kommt das Projektfoto hin",
     callNowNumber: "Jetzt anrufen: +36 30 095 1686",
   },
   nav: {
@@ -50,7 +49,7 @@ const de: Dictionary = {
       roofWindow: "Dachfenstereinbau",
     },
     contactHeading: "Kontaktdaten",
-    location: "Gödöllő, Komitat Pest, Ungarn",
+    location: "Budapest, Ungarn",
     weekdays: "Montag–Freitag: 7:00–18:00",
     saturday: "Samstag: 8:00–13:00",
     privacy: "Datenschutzerklärung",
@@ -77,7 +76,7 @@ const de: Dictionary = {
     paragraphs: [
       "Ich bin Máté Sóki, Dachdecker- und Spenglermeister. Seit 2009 plane, saniere und baue ich Dächer. Ich bin in Gödöllő geboren, lebe hier, und mein Betrieb lebt von den Empfehlungen meiner Kunden aus der Region.",
       "Ich arbeite nicht mit Subunternehmern – ich erledige die Arbeit selbst oder gemeinsam mit einem zuverlässigen, festen Mitarbeiter. So weiß ich immer, was auf dem Dach passiert, und stehe persönlich für die Qualität ein.",
-      "Zur Besichtigung komme ich in die gesamte Umgebung: Gödöllő, Aszód, Bag, Pécel, Isaszeg, Kistarcsa, Mogyoród und Vácszentlászló. Besichtigung und Angebot sind kostenlos und unverbindlich.",
+      "Mein Firmensitz ist in Budapest, aber ich arbeite nicht nur in der Region: Ich übernehme Aufträge in ganz Ungarn, Österreich, der Slowakei und Deutschland. Besichtigung und Angebot sind kostenlos und unverbindlich.",
     ],
     checkItems: [
       "Immer persönliche Ausführung – keine Weitergabe an Subunternehmer",
@@ -85,8 +84,13 @@ const de: Dictionary = {
       "5 Jahre Garantie auf die ausgeführten Arbeiten",
       "Ausführung mit Rechnung und Vertrag",
     ],
-    portraitAria: "Porträt des Dachdeckermeisters",
-    portraitPlaceholder: "Hier kommt das Porträt- oder Projektfoto hin",
+    since: "Im Handwerk seit {year}",
+    area: {
+      title: "Einsatzgebiet",
+      countries: { HU: "Ungarn", AT: "Österreich", SK: "Slowakei", DE: "Deutschland" },
+      hq: "Firmensitz: Budapest",
+      mapAria: "Karte: Wir arbeiten in ganz Ungarn, Österreich, der Slowakei und Deutschland, Firmensitz in Budapest.",
+    },
   },
   services: {
     eyebrow: "Leistungen",
@@ -421,13 +425,12 @@ const de: Dictionary = {
       { title: "Kompletter Umbau auf Ziegeldach", detail: "175 m²" },
     ],
     noResults: "Keine Treffer in dieser Kategorie.",
-    photoAria: "Projektfoto: {title}",
     close: "Schließen",
   },
   contactPage: {
     metaTitle: "Kontakt & Angebotsanfrage | Máté Tetőfedő Gödöllő",
     metaDescription:
-      "Nehmen Sie Kontakt mit unserem Dachdeckermeister auf. Kostenlose Besichtigung, unverbindliches Angebot. Gödöllő und 30 km Umkreis.",
+      "Nehmen Sie Kontakt mit unserem Dachdeckermeister auf. Kostenlose Besichtigung, unverbindliches Angebot. Ungarn, Österreich, Slowakei und Deutschland.",
     ogDescription:
       "Nehmen Sie Kontakt mit unserem Dachdeckermeister auf. Kostenlose Besichtigung, unverbindliches Angebot.",
     title: "Kontakt",
@@ -437,14 +440,14 @@ const de: Dictionary = {
     emailLabel: "E-Mail",
     emailSub: "Ich antworte in der Regel innerhalb von 24 Stunden",
     hqLabel: "Firmensitz",
-    hqValue: "Gödöllő, Komitat Pest, Ungarn",
-    hqSub: "Einsatzgebiet: 30 km",
+    hqValue: "Budapest, Ungarn",
+    hqSub: "Einsatzgebiet: Ungarn, Österreich, Slowakei, Deutschland",
     hoursHeading: "Öffnungszeiten",
     hoursAria: "Öffnungszeiten",
     days: ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"],
     closed: "Geschlossen",
     mapTitle: "Standort von Máté Tetőfedő auf Google Maps",
-    mapAria: "Standort Gödöllő auf Google Maps",
+    mapAria: "Standort Budapest auf Google Maps",
     formTitle: "Angebotsanfrage / Kontaktaufnahme",
     formSubtitle: "Besichtigung und Angebot sind kostenlos und unverbindlich.",
   },
@@ -498,7 +501,7 @@ const de: Dictionary = {
     metaDescription: "Datenschutzerklärung – Máté Tetőfedő & Bádogos",
     title: "Datenschutzerklärung",
     heading: "Informationen zur Datenverarbeitung",
-    controller: "Verantwortlicher: Máté (Einzelunternehmer), Sitz: Gödöllő, Komitat Pest, Ungarn.",
+    controller: "Verantwortlicher: Máté (Einzelunternehmer), Sitz: Budapest, Ungarn.",
     purpose:
       "Die im Kontaktformular angegebenen personenbezogenen Daten (Name, Telefonnummer, E-Mail-Adresse, Adresse) verarbeiten wir ausschließlich zur Erstellung des Angebots und zur Kontaktaufnahme. Die Daten werden nicht an Dritte weitergegeben und nach Abschluss des Angebotsverfahrens gelöscht.",
     legalBasis: "Rechtsgrundlage der Verarbeitung: Einwilligung der betroffenen Person (Art. 6 Abs. 1 lit. a DSGVO).",

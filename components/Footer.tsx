@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import LogoMark from "@/components/LogoMark";
 import { localizePath, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -29,39 +30,41 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-[#1C1917] text-white" role="contentinfo">
-      <div className="container-custom py-16">
+    <footer className="bg-[#14181B] text-white" role="contentinfo">
+      <div className="container-custom pb-14 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Column 1: Brand */}
           <div>
-            <div className="mb-4">
-              <span className="text-xl font-extrabold text-white">Máté</span>
-              <span className="text-xl font-normal text-white"> Tetőfedő</span>
-              <p className="text-sm font-medium text-[#A8A29E] tracking-widest uppercase mt-0.5">
-                &amp; Bádogos
-              </p>
+            <div className="mb-5 flex items-center gap-3">
+              <LogoMark />
+              <span className="flex flex-col leading-none">
+                <span className="font-display text-[20px] text-white">Máté</span>
+                <span className="mt-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-white/50">
+                  Tetőfedő &amp; Bádogos
+                </span>
+              </span>
             </div>
-            <p className="text-[#A8A29E] text-sm leading-relaxed mb-6">
+            <p className="text-[#7F8A91] text-sm leading-relaxed mb-6">
               {dict.tagline}
             </p>
             <a
-              href="https://maps.google.com/?q=Gödöllő+Pest+megye+Hungary"
+              href="https://maps.google.com/?q=Budapest+Hungary"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[#A8A29E] hover:text-white text-sm transition-colors"
+              className="inline-flex items-center gap-2 text-[#7F8A91] hover:text-white text-sm transition-colors"
               aria-label={dict.mapsAria}
             >
               <MapPin size={16} aria-hidden="true" />
               {dict.maps}
             </a>
-            <p className="text-[#57534E] text-xs mt-8">
-              © 2024 Máté Tetőfedő &amp; Bádogos. {dict.rights}
+            <p className="mt-8 text-xs text-white/35">
+              © {new Date().getFullYear()} Máté Tetőfedő &amp; Bádogos. {dict.rights}
             </p>
           </div>
 
           {/* Column 2: Navigation */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
+            <h3 className="label-text mb-5 text-white/45">
               {dict.navHeading}
             </h3>
             <ul className="space-y-3">
@@ -69,7 +72,7 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[#A8A29E] hover:text-white text-sm transition-colors"
+                    className="text-[#7F8A91] hover:text-white text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -80,7 +83,7 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
 
           {/* Column 3: Services */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
+            <h3 className="label-text mb-5 text-white/45">
               {dict.servicesHeading}
             </h3>
             <ul className="space-y-3">
@@ -88,7 +91,7 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[#A8A29E] hover:text-white text-sm transition-colors"
+                    className="text-[#7F8A91] hover:text-white text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -99,14 +102,14 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
 
           {/* Column 4: Contact */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
+            <h3 className="label-text mb-5 text-white/45">
               {dict.contactHeading}
             </h3>
             <ul className="space-y-4">
               <li>
                 <a
                   href="tel:+36300951686"
-                  className="flex items-start gap-3 text-[#A8A29E] hover:text-white text-sm transition-colors"
+                  className="flex items-start gap-3 text-[#7F8A91] hover:text-white text-sm transition-colors"
                 >
                   <Phone size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
                   +36 30 095 1686
@@ -115,20 +118,20 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
               <li>
                 <a
                   href="mailto:mate.tetofedo@gmail.com"
-                  className="flex items-start gap-3 text-[#A8A29E] hover:text-white text-sm transition-colors"
+                  className="flex items-start gap-3 text-[#7F8A91] hover:text-white text-sm transition-colors"
                 >
                   <Mail size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
                   mate.tetofedo@gmail.com
                 </a>
               </li>
               <li>
-                <div className="flex items-start gap-3 text-[#A8A29E] text-sm">
+                <div className="flex items-start gap-3 text-[#7F8A91] text-sm">
                   <MapPin size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
                   {dict.location}
                 </div>
               </li>
               <li>
-                <div className="flex items-start gap-3 text-[#A8A29E] text-sm">
+                <div className="flex items-start gap-3 text-[#7F8A91] text-sm">
                   <Clock size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
                   <div>
                     <p>{dict.weekdays}</p>
@@ -142,15 +145,15 @@ export default function Footer({ lang, dict, navLinks: labels }: FooterProps) {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-[#2C2517]">
+      <div className="border-t border-white/[0.07]">
         <div className="container-custom py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
           <Link
             href={localizePath(lang, "/adatvedelem")}
-            className="text-[#57534E] hover:text-[#A8A29E] text-xs transition-colors"
+            className="text-xs text-white/40 transition-colors hover:text-white"
           >
             {dict.privacy}
           </Link>
-          <span className="text-[#57534E] text-xs">
+          <span className="text-xs text-white/40">
             {dict.designedBy}
           </span>
         </div>

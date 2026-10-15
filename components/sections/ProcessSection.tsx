@@ -1,55 +1,60 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export default function ProcessSection({ dict }: { dict: Dictionary["process"] }) {
+  const reduce = useReducedMotion();
   const steps = dict.steps.map((step, i) => ({ ...step, number: String(i + 1).padStart(2, "0") }));
 
   return (
-    <section
-      className="bg-[#F7F5F2]"
-      style={{ paddingTop: 96, paddingBottom: 96 }}
-      aria-labelledby="process-heading"
-    >
+    <section className="bg-[#F1F3F4] py-24 md:py-28" aria-labelledby="process-heading">
       <div className="container-custom">
         <FadeIn>
-          <div className="text-center max-w-xl mx-auto mb-14">
-            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
+          <div className="mx-auto mb-16 max-w-xl text-center">
+            <p className="label-text mb-5 text-[#C84B11]">{dict.eyebrow}</p>
             <h2
               id="process-heading"
-              className="text-[#1C1917] font-bold"
-              style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
+              className="font-display text-[clamp(30px,3.6vw,44px)] leading-[1.08] text-[#14181B]"
             >
               {dict.title}
             </h2>
           </div>
         </FadeIn>
 
-        {/* Steps   horizontal timeline on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-          {/* Connector line (desktop only) */}
-          <div
-            className="hidden lg:block absolute top-10 left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-px bg-[#E7E5E4]"
-            aria-hidden="true"
-          />
+        <div className="relative">
+          {/* The line fills in step by step as the section scrolls into view */}
+          <div className="absolute left-[12.5%] right-[12.5%] top-7 hidden h-[2px] bg-[#DDE2E5] lg:block" aria-hidden="true">
+            <motion.div
+              className="h-full origin-left bg-[#C84B11]"
+              initial={{ scaleX: reduce ? 1 : 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 1.4, ease, delay: 0.2 }}
+            />
+          </div>
 
-          {steps.map((step, i) => (
-            <FadeIn key={step.number} delay={i * 0.1}>
-              <div className="flex flex-col items-start lg:items-center lg:text-center">
-                {/* Number bubble */}
-                <div className="relative mb-6">
-                  <div className="w-20 h-20 rounded-full bg-white border-2 border-[#C84B11] flex items-center justify-center shadow-card">
-                    <span className="text-2xl font-bold text-[#C84B11]">
-                      {step.number}
-                    </span>
-                  </div>
-                </div>
-                <h3 className="text-[#1C1917] text-lg font-semibold mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-[#57534E] text-sm leading-relaxed">{step.text}</p>
-              </div>
-            </FadeIn>
-          ))}
+          <ol className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {steps.map((step, i) => (
+              <motion.li
+                key={step.number}
+                className="relative flex flex-col items-start lg:items-center lg:text-center"
+                initial={{ opacity: 0, y: reduce ? 0 : 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.6, ease, delay: reduce ? 0 : 0.2 + i * 0.3 }}
+              >
+                <span className="relative z-10 mb-6 grid h-14 w-14 place-items-center rounded-full border-2 border-[#C84B11] bg-white font-mono text-lg font-semibold text-[#C84B11] shadow-card">
+                  {step.number}
+                </span>
+                <h3 className="font-display mb-2 text-[19px] leading-snug text-[#14181B]">{step.title}</h3>
+                <p className="max-w-[260px] text-sm leading-relaxed text-[#4F5A61]">{step.text}</p>
+              </motion.li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

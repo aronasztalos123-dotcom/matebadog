@@ -13,7 +13,6 @@ const sk: Dictionary = {
   common: {
     home: "Domov",
     breadcrumbAria: "Navigačná cesta",
-    photoPlaceholder: "Tu bude fotografia z realizácie",
     callNowNumber: "Volajte teraz: +36 30 095 1686",
   },
   nav: {
@@ -50,7 +49,7 @@ const sk: Dictionary = {
       roofWindow: "Montáž strešných okien",
     },
     contactHeading: "Kontaktné údaje",
-    location: "Gödöllő, župa Pest, Maďarsko",
+    location: "Budapešť, Maďarsko",
     weekdays: "Pondelok–Piatok: 7:00–18:00",
     saturday: "Sobota: 8:00–13:00",
     privacy: "Ochrana osobných údajov",
@@ -77,7 +76,7 @@ const sk: Dictionary = {
     paragraphs: [
       "Som Máté Sóki, majster pokrývač a klampiar. Od roku 2009 sa venujem navrhovaniu, rekonštrukcii a realizácii striech. Narodil som sa v Gödöllő, žijem tu a moje podnikanie stojí na odporúčaniach miestnych zákazníkov.",
       "Nepracujem so subdodávateľmi – prácu robím sám alebo so spoľahlivým stálym pomocníkom. Vďaka tomu vždy viem, čo sa na streche deje, a za kvalitu ručím osobne.",
-      "Na obhliadku prídem do celého okolia: Gödöllő, Aszód, Bag, Pécel, Isaszeg, Kistarcsa, Mogyoród a Vácszentlászló. Obhliadka aj cenová ponuka sú bezplatné a nezáväzné.",
+      "Sídlo mám v Budapešti, ale nepracujem len v okolí: zákazky preberám na celom území Maďarska, Rakúska, Slovenska a Nemecka. Obhliadka aj cenová ponuka sú bezplatné a nezáväzné.",
     ],
     checkItems: [
       "Vždy osobná realizácia – nič nezadávam subdodávateľom",
@@ -85,8 +84,13 @@ const sk: Dictionary = {
       "Na vykonanú prácu poskytujem 5-ročnú záruku",
       "Realizácia na faktúru, so zmluvou",
     ],
-    portraitAria: "Portrét majstra pokrývača",
-    portraitPlaceholder: "Tu bude portrét alebo fotografia z realizácie",
+    since: "V remesle od roku {year}",
+    area: {
+      title: "Oblasť pôsobenia",
+      countries: { HU: "Maďarsko", AT: "Rakúsko", SK: "Slovensko", DE: "Nemecko" },
+      hq: "Sídlo: Budapešť",
+      mapAria: "Mapa: pracujeme na celom území Maďarska, Rakúska, Slovenska a Nemecka, so sídlom v Budapešti.",
+    },
   },
   services: {
     eyebrow: "Služby",
@@ -421,13 +425,12 @@ const sk: Dictionary = {
       { title: "Kompletná výmena za škridlovú strechu", detail: "175 m²" },
     ],
     noResults: "V tejto kategórii nie sú žiadne výsledky.",
-    photoAria: "Fotografia z realizácie: {title}",
     close: "Zavrieť",
   },
   contactPage: {
     metaTitle: "Kontakt & žiadosť o cenovú ponuku | Máté Tetőfedő Gödöllő",
     metaDescription:
-      "Kontaktujte nášho majstra pokrývača. Bezplatná obhliadka, nezáväzná cenová ponuka. Gödöllő a okolie do 30 km.",
+      "Kontaktujte nášho majstra pokrývača. Bezplatná obhliadka, nezáväzná cenová ponuka. Maďarsko, Rakúsko, Slovensko a Nemecko.",
     ogDescription: "Kontaktujte nášho majstra pokrývača. Bezplatná obhliadka, nezáväzná cenová ponuka.",
     title: "Kontakt",
     subtitle: "Napíšte, zavolajte alebo si vyžiadajte bezplatnú obhliadku",
@@ -436,14 +439,14 @@ const sk: Dictionary = {
     emailLabel: "E-mail",
     emailSub: "Zvyčajne odpovedám do 24 hodín",
     hqLabel: "Sídlo",
-    hqValue: "Gödöllő, župa Pest, Maďarsko",
-    hqSub: "Oblasť pôsobenia: 30 km",
+    hqValue: "Budapešť, Maďarsko",
+    hqSub: "Oblasť pôsobenia: Maďarsko, Rakúsko, Slovensko, Nemecko",
     hoursHeading: "Otváracie hodiny",
     hoursAria: "Otváracie hodiny",
     days: ["Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota", "Nedeľa"],
     closed: "Zatvorené",
     mapTitle: "Poloha Máté Tetőfedő na Mapách Google",
-    mapAria: "Poloha Gödöllő na Mapách Google",
+    mapAria: "Poloha Budapešti na Mapách Google",
     formTitle: "Žiadosť o ponuku / kontakt",
     formSubtitle: "Obhliadka aj cenová ponuka sú bezplatné a nezáväzné.",
   },
@@ -497,7 +500,7 @@ const sk: Dictionary = {
     metaDescription: "Ochrana osobných údajov – Máté Tetőfedő & Bádogos",
     title: "Ochrana osobných údajov",
     heading: "Informácie o spracúvaní osobných údajov",
-    controller: "Prevádzkovateľ: Máté (živnostník), sídlo: Gödöllő, župa Pest, Maďarsko.",
+    controller: "Prevádzkovateľ: Máté (živnostník), sídlo: Budapešť, Maďarsko.",
     purpose:
       "Osobné údaje uvedené v kontaktnom formulári (meno, telefónne číslo, e-mailová adresa, adresa) spracúvame výlučne na účely prípravy cenovej ponuky a nadviazania kontaktu. Údaje neposkytujeme tretím stranám a po ukončení ponukového procesu ich vymažeme.",
     legalBasis: "Právny základ spracúvania: súhlas dotknutej osoby (čl. 6 ods. 1 písm. a) GDPR).",

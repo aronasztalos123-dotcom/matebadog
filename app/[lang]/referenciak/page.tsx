@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ReferencjakClient from "@/components/ReferencjakClient";
 import FadeIn from "@/components/FadeIn";
+import { Phone } from "lucide-react";
 import { notFound } from "next/navigation";
 import { hasLocale, localizePath } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -35,20 +36,15 @@ export default async function ReferencjakPage({ params }: PageParams) {
         breadcrumbAria={dict.common.breadcrumbAria}
       />
 
-      <section className="bg-white" style={{ paddingTop: 80, paddingBottom: 80 }}>
+      <section className="bg-[#F1F3F4] pb-24 pt-20 md:pt-24">
         <div className="container-custom">
-          <ReferencjakClient dict={dict.references} photoPlaceholder={dict.common.photoPlaceholder} />
+          <ReferencjakClient dict={dict.references} />
 
           <FadeIn>
-            <div className="mt-16 bg-[#F7F5F2] rounded-card p-8 text-center border border-[#E7E5E4]">
-              <p className="text-[#57534E] text-base leading-relaxed max-w-xl mx-auto">
-                {t.visitText}
-              </p>
-              <a
-                href="tel:+36300951686"
-                className="btn-primary inline-flex mt-6"
-                aria-label={t.callAria}
-              >
+            <div className="mt-16 flex flex-col items-start justify-between gap-6 rounded-[22px] bg-[#1A2025] p-8 text-white md:flex-row md:items-center md:p-10">
+              <p className="max-w-xl text-lg leading-relaxed text-white/80">{t.visitText}</p>
+              <a href="tel:+36300951686" className="btn-primary shrink-0" aria-label={t.callAria}>
+                <Phone size={17} aria-hidden="true" />
                 {dict.common.callNowNumber}
               </a>
             </div>

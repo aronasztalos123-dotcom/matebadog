@@ -308,9 +308,9 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
   ]);
 
   const inputClass =
-    "w-full border border-[#E7E5E4] rounded-[8px] px-4 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#C84B11] focus:border-transparent transition-all bg-white";
+    "w-full border border-[#DDE2E5] rounded-[8px] px-4 py-2.5 text-sm text-[#14181B] focus:outline-none focus:ring-2 focus:ring-[#C84B11] focus:border-transparent transition-all bg-white";
 
-  const labelClass = "block text-sm font-medium text-[#1C1917] mb-1.5";
+  const labelClass = "block text-sm font-medium text-[#14181B] mb-1.5";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 items-start">
@@ -318,8 +318,8 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
       <div className="space-y-8">
 
         {/* SECTION A: Alap adatok */}
-        <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-          <h2 className="text-lg font-semibold text-[#1C1917] mb-6 pb-4 border-b border-[#E7E5E4]">
+        <div className="bg-white rounded-card border border-[#DDE2E5] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+          <h2 className="font-display text-xl text-[#14181B] mb-6 pb-4 border-b border-[#DDE2E5]">
             {dict.sectionA}
           </h2>
 
@@ -339,11 +339,11 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                   onChange={(e) => setArea(e.target.value)}
                   aria-describedby="area-help"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A8A29E] text-sm">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7F8A91] text-sm">
                   m²
                 </span>
               </div>
-              <p id="area-help" className="mt-2 text-xs text-[#A8A29E] leading-relaxed">
+              <p id="area-help" className="mt-2 text-xs text-[#7F8A91] leading-relaxed">
                 {dict.areaHelp}
               </p>
             </div>
@@ -365,20 +365,20 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                     </option>
                   ))}
                 </select>
-                <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A8A29E] pointer-events-none" aria-hidden="true" />
+                <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7F8A91] pointer-events-none" aria-hidden="true" />
               </div>
             </div>
           </div>
         </div>
 
         {/* SECTION B: Anyagköltségek */}
-        <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-          <h2 className="text-lg font-semibold text-[#1C1917] mb-6 pb-4 border-b border-[#E7E5E4]">
+        <div className="bg-white rounded-card border border-[#DDE2E5] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+          <h2 className="font-display text-xl text-[#14181B] mb-6 pb-4 border-b border-[#DDE2E5]">
             {dict.sectionB}
           </h2>
 
           <div className="space-y-1">
-            <div className="grid grid-cols-[1fr_140px] gap-3 text-xs font-medium text-[#A8A29E] uppercase tracking-wide pb-2">
+            <div className="grid grid-cols-[1fr_140px] gap-3 text-xs font-medium text-[#7F8A91] uppercase tracking-wide pb-2">
               <span>{dict.colItem}</span>
               <span className="text-right">{dict.colAmount}</span>
             </div>
@@ -392,25 +392,25 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
             ].map((row) => (
               <div
                 key={row.id}
-                className="grid grid-cols-[1fr_140px] gap-3 items-center py-3 border-b border-[#F7F5F2] last:border-0"
+                className="grid grid-cols-[1fr_140px] gap-3 items-center py-3 border-b border-[#F1F3F4] last:border-0"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-[#1C1917]">{row.label}</span>
+                    <span className="text-sm text-[#14181B]">{row.label}</span>
                     <button
                       type="button"
                       title={row.tooltip}
-                      className="text-[#A8A29E] hover:text-[#57534E] transition-colors"
+                      className="text-[#7F8A91] hover:text-[#4F5A61] transition-colors"
                       aria-label={fill(dict.infoAria, { label: row.label })}
                     >
                       <Info size={13} aria-hidden="true" />
                     </button>
                   </div>
-                  <span className="text-xs text-[#A8A29E] mt-0.5 block">
+                  <span className="text-xs text-[#7F8A91] mt-0.5 block">
                     {num(row.unitPrice)} {dict.perSqm}
                   </span>
                 </div>
-                <p className="text-right text-sm font-semibold text-[#1C1917]">
+                <p className="text-right font-mono text-sm font-semibold tabular-nums text-[#14181B]">
                   {fmt(row.total)}
                 </p>
               </div>
@@ -419,13 +419,13 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
         </div>
 
         {/* SECTION C: Ácsmunka */}
-        <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E7E5E4]">
-            <h2 className="text-lg font-semibold text-[#1C1917]">
+        <div className="bg-white rounded-card border border-[#DDE2E5] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#DDE2E5]">
+            <h2 className="font-display text-xl text-[#14181B]">
               {dict.sectionC}
             </h2>
             <label className="flex items-center gap-3 cursor-pointer" htmlFor="carpentry-toggle">
-              <span className="text-sm text-[#57534E]">{dict.carpentryToggle}</span>
+              <span className="text-sm text-[#4F5A61]">{dict.carpentryToggle}</span>
               <div className="relative">
                 <input
                   id="carpentry-toggle"
@@ -436,7 +436,7 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                 />
                 <div
                   className={`w-11 h-6 rounded-full transition-colors duration-200 ${
-                    carpentryEnabled ? "bg-[#C84B11]" : "bg-[#E7E5E4]"
+                    carpentryEnabled ? "bg-[#C84B11]" : "bg-[#DDE2E5]"
                   }`}
                   aria-hidden="true"
                 >
@@ -466,17 +466,17 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                     value={carpentryArea}
                     onChange={(e) => setCarpentryArea(e.target.value)}
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A8A29E] text-sm">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7F8A91] text-sm">
                     m²
                   </span>
                 </div>
-                <p className="mt-2 text-xs text-[#A8A29E]">
+                <p className="mt-2 text-xs text-[#7F8A91]">
                   {dict.carpentryHelp}
                 </p>
               </div>
 
               <div className="space-y-1">
-                <div className="grid grid-cols-[1fr_140px] gap-3 text-xs font-medium text-[#A8A29E] uppercase tracking-wide pb-2">
+                <div className="grid grid-cols-[1fr_140px] gap-3 text-xs font-medium text-[#7F8A91] uppercase tracking-wide pb-2">
                   <span>{dict.colItem}</span>
                   <span className="text-right">{dict.colAmount}</span>
                 </div>
@@ -497,15 +497,15 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                 ].map((row) => (
                   <div
                     key={row.id}
-                    className="grid grid-cols-[1fr_140px] gap-3 items-center py-3 border-b border-[#F7F5F2] last:border-0"
+                    className="grid grid-cols-[1fr_140px] gap-3 items-center py-3 border-b border-[#F1F3F4] last:border-0"
                   >
                     <div>
-                      <span className="text-sm text-[#1C1917]">{row.label}</span>
-                      <span className="text-xs text-[#A8A29E] mt-0.5 block">
+                      <span className="text-sm text-[#14181B]">{row.label}</span>
+                      <span className="text-xs text-[#7F8A91] mt-0.5 block">
                         {num(row.unitPrice)} {dict.perSqm}
                       </span>
                     </div>
-                    <p className="text-right text-sm font-semibold text-[#1C1917]">
+                    <p className="text-right font-mono text-sm font-semibold tabular-nums text-[#14181B]">
                       {fmt(row.total)}
                     </p>
                   </div>
@@ -515,18 +515,18 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
           )}
 
           {!carpentryEnabled && (
-            <p className="text-sm text-[#A8A29E]">
+            <p className="text-sm text-[#7F8A91]">
               {dict.carpentryOff}
             </p>
           )}
         </div>
 
         {/* SECTION D: Plusz elemek */}
-        <div className="bg-white rounded-card border border-[#E7E5E4] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-          <h2 className="text-lg font-semibold text-[#1C1917] mb-2 pb-4 border-b border-[#E7E5E4]">
+        <div className="bg-white rounded-card border border-[#DDE2E5] p-6 md:p-8" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+          <h2 className="font-display text-xl text-[#14181B] mb-2 pb-4 border-b border-[#DDE2E5]">
             {dict.sectionD}
           </h2>
-          <p className="text-xs text-[#A8A29E] mt-4 mb-6">
+          <p className="text-xs text-[#7F8A91] mt-4 mb-6">
             {dict.sectionDHelp}
           </p>
 
@@ -540,7 +540,7 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                 <div
                   key={item.id}
                   className={`border rounded-[8px] p-4 transition-colors ${
-                    state.enabled ? "border-[#C84B11] bg-[#FBF8F6]" : "border-[#E7E5E4] bg-white"
+                    state.enabled ? "border-[#C84B11] bg-[#FBF8F6]" : "border-[#DDE2E5] bg-white"
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -555,20 +555,20 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                       <div className="flex items-center gap-2 flex-wrap">
                         <label
                           htmlFor={`pre-${item.id}`}
-                          className="text-sm font-medium text-[#1C1917] cursor-pointer"
+                          className="text-sm font-medium text-[#14181B] cursor-pointer"
                         >
                           {name}
                         </label>
                         <button
                           type="button"
                           title={tooltip}
-                          className="text-[#A8A29E] hover:text-[#57534E] transition-colors"
+                          className="text-[#7F8A91] hover:text-[#4F5A61] transition-colors"
                           aria-label={fill(dict.infoAria, { label: name })}
                         >
                           <Info size={13} aria-hidden="true" />
                         </button>
                       </div>
-                      <span className="text-xs text-[#A8A29E] mt-0.5 block">
+                      <span className="text-xs text-[#7F8A91] mt-0.5 block">
                         {num(item.unitPrice)} Ft/{dict.units[item.unit]}
                       </span>
                     </div>
@@ -583,11 +583,11 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                             onChange={(e) => updatePredefinedQty(item.id, e.target.value)}
                             aria-label={fill(dict.qtyAria, { name })}
                           />
-                          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A8A29E] text-xs pointer-events-none">
+                          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#7F8A91] text-xs pointer-events-none">
                             {dict.units[item.unit]}
                           </span>
                         </div>
-                        <span className="text-sm font-semibold text-[#1C1917] w-28 text-right whitespace-nowrap">
+                        <span className="text-sm font-semibold text-[#14181B] w-28 text-right whitespace-nowrap">
                           {fmt(itemTotal)}
                         </span>
                       </div>
@@ -600,15 +600,15 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
 
           {/* Custom accessories */}
           <div>
-            <h3 className="text-sm font-semibold text-[#57534E] mb-4 flex items-center gap-3">
-              <span className="block w-6 h-px bg-[#E7E5E4]" aria-hidden="true" />
+            <h3 className="text-sm font-semibold text-[#4F5A61] mb-4 flex items-center gap-3">
+              <span className="block w-6 h-px bg-[#DDE2E5]" aria-hidden="true" />
               {dict.customHeading}
-              <span className="block flex-1 h-px bg-[#E7E5E4]" aria-hidden="true" />
+              <span className="block flex-1 h-px bg-[#DDE2E5]" aria-hidden="true" />
             </h3>
 
             {accessories.length > 0 && (
               <div className="space-y-3 mb-3">
-                <div className="hidden sm:grid grid-cols-[2fr_80px_80px_100px_80px_32px] gap-2 text-xs font-medium text-[#A8A29E] uppercase tracking-wide">
+                <div className="hidden sm:grid grid-cols-[2fr_80px_80px_100px_80px_32px] gap-2 text-xs font-medium text-[#7F8A91] uppercase tracking-wide">
                   <span>{dict.colName}</span>
                   <span>{dict.colQty}</span>
                   <span>{dict.colUnit}</span>
@@ -622,7 +622,7 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                   return (
                     <div
                       key={row.id}
-                      className="flex flex-col sm:grid sm:grid-cols-[2fr_80px_80px_100px_80px_32px] gap-2 items-start sm:items-center py-2 border-b border-[#F7F5F2] last:border-0"
+                      className="flex flex-col sm:grid sm:grid-cols-[2fr_80px_80px_100px_80px_32px] gap-2 items-start sm:items-center py-2 border-b border-[#F1F3F4] last:border-0"
                     >
                       <input
                         type="text"
@@ -662,13 +662,13 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                         onChange={(e) => updateAccessory(row.id, "unitPrice", e.target.value)}
                         aria-label={dict.colUnitPrice}
                       />
-                      <p className="text-right text-sm font-semibold text-[#1C1917] sm:block hidden">
+                      <p className="text-right text-sm font-semibold text-[#14181B] sm:block hidden">
                         {fmt(rowTotal)}
                       </p>
                       <button
                         type="button"
                         onClick={() => removeAccessory(row.id)}
-                        className="text-[#A8A29E] hover:text-red-500 transition-colors p-1 rounded"
+                        className="text-[#7F8A91] hover:text-red-500 transition-colors p-1 rounded"
                         aria-label={dict.deleteRow}
                       >
                         <Trash2 size={16} aria-hidden="true" />
@@ -694,14 +694,14 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
       {/* RIGHT: Summary panel */}
       <div className="lg:sticky lg:top-24">
         <div
-          className="bg-white rounded-card border border-[#E7E5E4] overflow-hidden"
+          className="bg-white rounded-card border border-[#DDE2E5] overflow-hidden"
           style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 12px 32px rgba(0,0,0,0.08)" }}
           aria-label={dict.summaryAria}
         >
           <div className="h-1 bg-[#C84B11]" aria-hidden="true" />
 
           <div className="p-6">
-            <h2 className="text-lg font-semibold text-[#1C1917] mb-6">
+            <h2 className="font-display text-xl text-[#14181B] mb-6">
               {dict.summaryTitle}
             </h2>
 
@@ -714,37 +714,37 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
 
               {carpentryEnabled && (
                 <>
-                  <div className="border-t border-[#E7E5E4] pt-3 mt-1" />
+                  <div className="border-t border-[#DDE2E5] pt-3 mt-1" />
                   <SummaryLine label={dict.summary.carpentryMaterial} value={fmt(carpentryMaterialTotal)} />
                   <SummaryLine label={dict.summary.carpentryLabor} value={fmt(carpentryLaborTotal)} />
                 </>
               )}
 
-              <div className="border-t border-[#E7E5E4] pt-3 mt-1" />
+              <div className="border-t border-[#DDE2E5] pt-3 mt-1" />
               <SummaryLine label={dict.summary.extras} value={fmt(predefinedTotal)} />
               <SummaryLine label={dict.summary.otherAccessories} value={fmt(customAccessoriesTotal)} />
-              <div className="flex justify-between items-center text-sm font-semibold border-t border-[#E7E5E4] pt-2 mt-1">
-                <span className="text-[#57534E]">{dict.summary.accessoriesTotal}</span>
-                <span className="text-[#1C1917]">{fmt(accessoriesTotal)}</span>
+              <div className="flex justify-between items-center text-sm font-semibold border-t border-[#DDE2E5] pt-2 mt-1">
+                <span className="text-[#4F5A61]">{dict.summary.accessoriesTotal}</span>
+                <span className="text-[#14181B]">{fmt(accessoriesTotal)}</span>
               </div>
             </div>
 
             {/* Total */}
-            <div className="border-t-2 border-[#E7E5E4] mt-4 pt-4">
+            <div className="border-t-2 border-[#DDE2E5] mt-4 pt-4">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-[#1C1917] text-base">{dict.grandTotal}</span>
-                <span className="font-bold text-[#C84B11] text-xl">{fmt(subtotal)}</span>
+                <span className="font-bold text-[#14181B] text-base">{dict.grandTotal}</span>
+                <span className="font-mono text-2xl font-semibold tabular-nums text-[#C84B11]">{fmt(subtotal)}</span>
               </div>
 
               {vatEnabled && (
                 <>
                   <div className="flex justify-between items-center mt-2">
-                    <span className="text-sm text-[#57534E]">{dict.vat}</span>
-                    <span className="text-sm font-medium text-[#57534E]">{fmt(vatAmount)}</span>
+                    <span className="text-sm text-[#4F5A61]">{dict.vat}</span>
+                    <span className="text-sm font-medium text-[#4F5A61]">{fmt(vatAmount)}</span>
                   </div>
                   <div className="flex justify-between items-center mt-1">
-                    <span className="font-bold text-[#1C1917] text-base">{dict.grandTotalVat}</span>
-                    <span className="font-bold text-[#C84B11] text-xl">{fmt(total)}</span>
+                    <span className="font-bold text-[#14181B] text-base">{dict.grandTotalVat}</span>
+                    <span className="font-mono text-2xl font-semibold tabular-nums text-[#C84B11]">{fmt(total)}</span>
                   </div>
                 </>
               )}
@@ -755,7 +755,7 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
               htmlFor="vat-toggle"
               className="flex items-center justify-between mt-4 cursor-pointer"
             >
-              <span className="text-sm text-[#57534E]">{dict.vatToggle}</span>
+              <span className="text-sm text-[#4F5A61]">{dict.vatToggle}</span>
               <div className="relative">
                 <input
                   id="vat-toggle"
@@ -766,7 +766,7 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
                 />
                 <div
                   className={`w-11 h-6 rounded-full transition-colors duration-200 ${
-                    vatEnabled ? "bg-[#C84B11]" : "bg-[#E7E5E4]"
+                    vatEnabled ? "bg-[#C84B11]" : "bg-[#DDE2E5]"
                   }`}
                   aria-hidden="true"
                 >
@@ -779,7 +779,7 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
               </div>
             </label>
 
-            <p className="text-xs text-[#A8A29E] mt-3 leading-relaxed">
+            <p className="text-xs text-[#7F8A91] mt-3 leading-relaxed">
               {dict.vatNote}
             </p>
 
@@ -813,8 +813,8 @@ export default function KalkulatorClient({ lang, dict }: KalkulatorClientProps) 
 function SummaryLine({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center text-sm">
-      <span className="text-[#57534E]">{label}</span>
-      <span className="font-medium text-[#1C1917]">{value}</span>
+      <span className="text-[#4F5A61]">{label}</span>
+      <span className="font-mono font-medium tabular-nums text-[#14181B]">{value}</span>
     </div>
   );
 }

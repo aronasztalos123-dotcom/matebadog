@@ -1,5 +1,5 @@
 import FadeIn from "@/components/FadeIn";
-import { Star } from "lucide-react";
+import { MapPin, Quote, Star } from "lucide-react";
 import { fill } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -9,53 +9,59 @@ const reviewers = [
   { stars: 5, name: "Balogh Éva", location: "Pécel" },
 ];
 
-function StarRow({ count, label }: { count: number; label: string }) {
-  return (
-    <div className="flex gap-1 mb-4" aria-label={fill(label, { count })}>
-      {Array.from({ length: count }).map((_, i) => (
-        <Star key={i} size={16} className="fill-[#C84B11] text-[#C84B11]" aria-hidden="true" />
-      ))}
-    </div>
-  );
+function initials(name: string) {
+  return name
+    .split(" ")
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("");
 }
 
 export default function TestimonialsSection({ dict }: { dict: Dictionary["testimonials"] }) {
   const testimonials = reviewers.map((r, i) => ({ ...r, quote: dict.quotes[i] }));
 
   return (
-    <section
-      className="bg-white"
-      style={{ paddingTop: 96, paddingBottom: 96 }}
-      aria-labelledby="testimonials-heading"
-    >
+    <section className="bg-white py-24 md:py-28" aria-labelledby="testimonials-heading">
       <div className="container-custom">
         <FadeIn>
-          <div className="text-center max-w-xl mx-auto mb-14">
-            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
+          <div className="mx-auto mb-14 max-w-xl text-center">
+            <p className="label-text mb-5 text-[#C84B11]">{dict.eyebrow}</p>
             <h2
               id="testimonials-heading"
-              className="text-[#1C1917] font-bold"
-              style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
+              className="font-display text-[clamp(30px,3.6vw,44px)] leading-[1.08] text-[#14181B]"
             >
               {dict.title}
             </h2>
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible -mx-6 px-6 md:mx-0 md:px-0">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {testimonials.map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.1}>
-              <article
-                className="bg-white border border-[#E7E5E4] rounded-card p-8 min-w-[280px] md:min-w-0"
-                style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)" }}
-              >
-                <StarRow count={t.stars} label={dict.starsAria} />
-                <blockquote className="text-[#57534E] text-sm leading-relaxed mb-6">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-                <footer>
-                  <p className="text-[#1C1917] font-semibold text-sm">{t.name}</p>
-                  <p className="text-[#A8A29E] text-xs">{t.location}</p>
+            <FadeIn key={t.name} delay={i * 0.1} className="h-full">
+              <article className="flex h-full flex-col rounded-[22px] border border-[#DDE2E5] bg-white p-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-card-hover">
+                <div className="mb-5 flex items-center justify-between">
+                  <div className="flex gap-0.5" role="img" aria-label={fill(dict.starsAria, { count: t.stars })}>
+                    {Array.from({ length: t.stars }).map((_, j) => (
+                      <Star key={j} size={16} className="fill-[#E8A33D] text-[#E8A33D]" aria-hidden="true" />
+                    ))}
+                  </div>
+                  <Quote size={30} className="text-[#C84B11]/20" aria-hidden="true" />
+                </div>
+                <blockquote className="flex-1 text-[15.5px] leading-relaxed text-[#14181B]">{t.quote}</blockquote>
+                <footer className="mt-7 flex items-center gap-3 border-t border-[#DDE2E5] pt-5">
+                  <span
+                    className="font-display grid h-10 w-10 place-items-center rounded-full bg-[#F1F3F4] text-[13px] text-[#4F5A61]"
+                    aria-hidden="true"
+                  >
+                    {initials(t.name)}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#14181B]">{t.name}</p>
+                    <p className="flex items-center gap-1 text-xs text-[#7F8A91]">
+                      <MapPin size={12} aria-hidden="true" />
+                      {t.location}
+                    </p>
+                  </div>
                 </footer>
               </article>
             </FadeIn>
@@ -63,9 +69,7 @@ export default function TestimonialsSection({ dict }: { dict: Dictionary["testim
         </div>
 
         <FadeIn>
-          <p className="text-center text-[#A8A29E] text-sm mt-10">
-            {dict.footnote}
-          </p>
+          <p className="mt-10 text-center text-sm text-[#7F8A91]">{dict.footnote}</p>
         </FadeIn>
       </div>
     </section>

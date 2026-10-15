@@ -41,8 +41,8 @@ export default async function KapcsolatPage({ params }: PageParams) {
 
       <section
         id="kapcsolat"
-        className="bg-[#F7F5F2]"
-        style={{ paddingTop: 80, paddingBottom: 80 }}
+        className="bg-[#F1F3F4]"
+        style={{ paddingTop: 96, paddingBottom: 96 }}
       >
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
@@ -77,7 +77,7 @@ export default async function KapcsolatPage({ params }: PageParams) {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <Clock size={18} className="text-[#C84B11]" aria-hidden="true" />
-                    <h3 className="text-[#1C1917] font-semibold text-base">
+                    <h3 className="font-display text-base text-[#14181B]">
                       {t.hoursHeading}
                     </h3>
                   </div>
@@ -88,16 +88,16 @@ export default async function KapcsolatPage({ params }: PageParams) {
                         return (
                           <tr
                             key={day}
-                            className="border-b border-[#E7E5E4] last:border-0"
+                            className="border-b border-[#DDE2E5] last:border-0"
                           >
-                            <td className="py-2.5 text-sm text-[#57534E] font-medium w-36">
+                            <td className="py-2.5 text-sm text-[#4F5A61] font-medium w-36">
                               {day}
                             </td>
                             <td
                               className={`py-2.5 text-sm text-right ${
                                 isClosed
-                                  ? "text-[#A8A29E]"
-                                  : "text-[#1C1917] font-medium"
+                                  ? "text-[#7F8A91]"
+                                  : "text-[#14181B] font-medium"
                               }`}
                             >
                               {time ?? t.closed}
@@ -113,7 +113,7 @@ export default async function KapcsolatPage({ params }: PageParams) {
                 <div>
                   <iframe
                     title={t.mapTitle}
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21617.29!2d19.9667394!3d47.6394674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741d5c2f6d9a1c9%3A0x400c4290c1e5fa0!2sG%C3%B6d%C3%B6ll%C5%91!5e0!3m2!1shu!2shu!4v1700000000000!5m2!1shu!2shu"
+                    src="https://maps.google.com/maps?q=Budapest&z=11&output=embed"
                     width="100%"
                     height="300"
                     style={{ border: 0, borderRadius: 12 }}
@@ -129,14 +129,13 @@ export default async function KapcsolatPage({ params }: PageParams) {
             {/* Right column: Form */}
             <FadeIn delay={0.12}>
               <div
-                className="bg-white rounded-card p-8"
-                style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)" }}
+                className="rounded-[24px] border border-[#DDE2E5] bg-white p-7 shadow-[0_30px_60px_-30px_rgba(20,24,27,0.35)] md:p-9"
               >
-                <div className="mb-6 pb-6 border-b border-[#E7E5E4]">
-                  <h2 className="text-xl font-bold text-[#1C1917] mb-2">
+                <div className="mb-6 pb-6 border-b border-[#DDE2E5]">
+                  <h2 className="font-display mb-2 text-2xl text-[#14181B]">
                     {t.formTitle}
                   </h2>
-                  <p className="text-[#57534E] text-sm">
+                  <p className="text-[#4F5A61] text-sm">
                     {t.formSubtitle}
                   </p>
                 </div>
@@ -165,24 +164,24 @@ function ContactBlock({
 }) {
   return (
     <div className="flex gap-4">
-      <div className="w-10 h-10 rounded-xl bg-[#FBE9E0] flex items-center justify-center text-[#C84B11] shrink-0">
+      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#C84B11] text-white shadow-[0_8px_18px_-8px_rgba(200,75,17,0.7)]">
         {icon}
       </div>
       <div>
-        <p className="text-xs font-medium text-[#A8A29E] uppercase tracking-wide mb-0.5">
+        <p className="label-text mb-1 text-[#7F8A91]">
           {label}
         </p>
         {href ? (
           <a
             href={href}
-            className="text-[#1C1917] font-semibold hover:text-[#C84B11] transition-colors text-sm"
+            className="text-lg font-semibold text-[#14181B] transition-colors hover:text-[#C84B11]"
           >
             {value}
           </a>
         ) : (
-          <p className="text-[#1C1917] font-semibold text-sm">{value}</p>
+          <p className="text-lg font-semibold text-[#14181B]">{value}</p>
         )}
-        <p className="text-[#57534E] text-xs mt-0.5">{sub}</p>
+        <p className="text-[#4F5A61] text-xs mt-0.5">{sub}</p>
       </div>
     </div>
   );

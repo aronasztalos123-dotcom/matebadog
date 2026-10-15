@@ -1,80 +1,94 @@
-import { Check } from "lucide-react";
+import { Check, MapPin } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import MaterialSwatch from "@/components/MaterialSwatch";
+import ServiceAreaMap from "@/components/ServiceAreaMap";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
+const countries = ["HU", "AT", "SK", "DE"] as const;
+
 export default function AboutSection({ dict }: { dict: Dictionary["about"] }) {
+  const [sinceBefore, sinceAfter] = dict.since.split("{year}");
+
   return (
-    <section
-      id="rolam"
-      className="bg-[#F7F5F2]"
-      style={{ paddingTop: 96, paddingBottom: 96 }}
-      aria-labelledby="about-heading"
-    >
+    <section id="rolam" className="bg-[#F1F3F4] pb-24 pt-28 md:pb-28 md:pt-32" aria-labelledby="about-heading">
       <div className="container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
           {/* Text column */}
           <FadeIn>
-            <p className="label-text text-[#C84B11] mb-4">{dict.eyebrow}</p>
+            <p className="label-text mb-5 text-[#C84B11]">{dict.eyebrow}</p>
             <h2
               id="about-heading"
-              className="text-[#1C1917] font-bold mb-8"
-              style={{ fontSize: "clamp(28px, 3.5vw, 38px)", lineHeight: "1.2" }}
+              className="font-display mb-8 text-[clamp(30px,3.6vw,44px)] leading-[1.08] text-[#14181B]"
             >
               {dict.titleLine1}
               <br />
-              {dict.titleLine2}
+              <span className="text-[#C84B11]">{dict.titleLine2}</span>
             </h2>
 
-            <div className="space-y-5 text-[#57534E] text-base leading-relaxed mb-10">
+            <div className="mb-10 space-y-5 text-base leading-relaxed text-[#4F5A61]">
               {dict.paragraphs.map((p) => (
                 <p key={p}>{p}</p>
               ))}
             </div>
 
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {dict.checkItems.map((item) => (
-                <li key={item} className="flex items-start gap-3">
+                <li
+                  key={item}
+                  className="flex items-start gap-3 rounded-xl border border-[#DDE2E5] bg-white p-4 text-sm leading-snug text-[#14181B]"
+                >
                   <span
-                    className="w-6 h-6 rounded-full bg-[#FBE9E0] flex items-center justify-center shrink-0 mt-0.5"
+                    className="mt-px grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#C84B11] text-white"
                     aria-hidden="true"
                   >
-                    <Check size={13} className="text-[#C84B11]" />
+                    <Check size={14} strokeWidth={3} />
                   </span>
-                  <span className="text-[#57534E] text-sm leading-relaxed">{item}</span>
+                  {item}
                 </li>
               ))}
             </ul>
           </FadeIn>
 
-          {/* Image placeholder column */}
-          <FadeIn delay={0.15}>
-            <div
-              className="rounded-card overflow-hidden bg-[#2C2517] flex items-center justify-center aspect-[4/5] relative"
-              aria-label={dict.portraitAria}
-            >
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                <svg
-                  width="80"
-                  height="80"
-                  viewBox="0 0 80 80"
-                  fill="none"
-                  className="mb-6 opacity-30"
-                  aria-hidden="true"
-                >
-                  <rect x="10" y="40" width="60" height="30" rx="3" fill="#C84B11" />
-                  <polygon points="5,42 40,12 75,42" fill="#A33D0D" />
-                  <rect x="30" y="55" width="20" height="15" rx="2" fill="#1C1917" />
-                </svg>
-                <p className="text-white/30 text-sm">
-                  {dict.portraitPlaceholder}
-                </p>
-              </div>
-
-              {/* Orange accent line */}
+          {/* Craftsman card: years in the trade and the service area */}
+          <FadeIn delay={0.12}>
+            <div className="relative overflow-hidden rounded-[22px] bg-[#1A2025] text-white shadow-[0_40px_80px_-40px_rgba(20,24,27,0.7)]">
+              <MaterialSwatch material="tiles" className="h-28" />
               <div
-                className="absolute top-0 left-0 right-0 h-1 bg-[#C84B11]"
+                className="eave absolute inset-x-0 top-28"
+                style={{ "--eave-color": "#7A2C0A" } as React.CSSProperties}
                 aria-hidden="true"
               />
+
+              <div className="p-7 pt-12 md:p-9 md:pt-14">
+                <p className="flex flex-col">
+                  {sinceBefore && <span className="label-text text-white/55">{sinceBefore.trim()}</span>}
+                  <span className="font-display text-[clamp(72px,9vw,104px)] leading-[0.95] tracking-tight">2009</span>
+                  {sinceAfter && <span className="label-text mt-2 text-white/55">{sinceAfter.trim()}</span>}
+                </p>
+
+                <div className="my-8 h-px bg-white/10" />
+
+                <p className="label-text mb-4 text-white/55">{dict.area.title}</p>
+                <div className="-mx-2 mb-5">
+                  <ServiceAreaMap dict={dict.area} />
+                </div>
+                <ul className="flex flex-wrap gap-2">
+                  {countries.map((code, i) => (
+                    <li
+                      key={code}
+                      className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] ${
+                        i === 0 ? "bg-[#C84B11] font-semibold text-white" : "border border-white/12 bg-white/[0.04] text-white/80"
+                      }`}
+                    >
+                      {i === 0 && <MapPin size={13} aria-hidden="true" />}
+                      {dict.area.countries[code]}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-[13px] text-white/50">{dict.area.hq}</p>
+
+                <p className="mt-8 font-mono text-xs text-white/35">47.4979° N · 19.0402° E</p>
+              </div>
             </div>
           </FadeIn>
         </div>

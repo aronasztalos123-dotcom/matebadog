@@ -28,11 +28,11 @@ export default async function AdatvedelemPage({ params }: PageParams) {
         breadcrumbs={[{ label: dict.common.home, href: localizePath(lang, "/") }, { label: t.title }]}
         breadcrumbAria={dict.common.breadcrumbAria}
       />
-      <section className="bg-white" style={{ paddingTop: 80, paddingBottom: 80 }}>
+      <section className="bg-white" style={{ paddingTop: 96, paddingBottom: 96 }}>
         <div className="container-custom max-w-3xl">
           <FadeIn>
-            <div className="prose prose-neutral max-w-none text-[#57534E] leading-relaxed space-y-6">
-              <h2 className="text-[#1C1917] font-bold text-2xl">{t.heading}</h2>
+            <div className="prose prose-neutral max-w-none text-[#4F5A61] leading-relaxed space-y-6">
+              <h2 className="font-display text-2xl text-[#14181B]">{t.heading}</h2>
               <p>{t.controller}</p>
               <p>{t.purpose}</p>
               <p>{t.legalBasis}</p>
@@ -46,7 +46,7 @@ export default async function AdatvedelemPage({ params }: PageParams) {
                 </a>
                 {t.rightsAfter}
               </p>
-              <p className="text-sm text-[#A8A29E]">
+              <p className="text-sm text-[#7F8A91]">
                 {t.lastUpdated}
               </p>
             </div>

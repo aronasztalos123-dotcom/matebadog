@@ -1,6 +1,6 @@
 const hu = {
   meta: {
-    title: "Máté Tetőfedő & Bádogos   Tetőfedés, Bádogos munkák | Gödöllő",
+    title: "Máté Tetőfedő & Bádogos – Tetőfedés, Bádogos munkák | Gödöllő",
     description:
       "Professzionális tetőfedési, bádogos és ácsszerkezeti munkák Gödöllő és környékén. 15+ év tapasztalat, ingyenes felmérés, 5 év garancia. Hívjon most: +36 30 095 1686",
     ogDescription:
@@ -11,7 +11,6 @@ const hu = {
   common: {
     home: "Főoldal",
     breadcrumbAria: "Útvonal",
-    photoPlaceholder: "Ide kerül a munkafotó",
     callNowNumber: "Hívjon most: +36 30 095 1686",
   },
   nav: {
@@ -48,7 +47,7 @@ const hu = {
       roofWindow: "Tetőablak beépítés",
     },
     contactHeading: "Elérhetőség",
-    location: "Gödöllő, Pest megye",
+    location: "Budapest",
     weekdays: "Hétfő–Péntek: 7:00–18:00",
     saturday: "Szombat: 8:00–13:00",
     privacy: "Adatvédelmi tájékoztató",
@@ -74,34 +73,39 @@ const hu = {
     titleLine2: "becsületes áron.",
     paragraphs: [
       "Sóki Máté vagyok, tetőfedő és bádogos mester. 2009 óta foglalkozom tetők tervezésével, felújításával és kivitelezésével. Gödöllőn születtem, itt élek, és az itteni ügyfeleim ajánlásából él a vállalkozásom.",
-      "Nem alvállalkozókkal dolgozom   én magam végzem a munkát, vagy egy megbízható, állandó segédemmel. Ez azt jelenti, hogy mindig tudom, mi történik a tetőn, és személyesen állok jót a minőségért.",
-      "Felmérésre kiszállok az egész körzetbe: Gödöllő, Aszód, Bag, Pécel, Isaszeg, Kistarcsa, Mogyoród, Vácszentlászló. A felmérés és az árajánlat ingyenes és kötelezettségmentes.",
+      "Nem alvállalkozókkal dolgozom – én magam végzem a munkát, vagy egy megbízható, állandó segédemmel. Ez azt jelenti, hogy mindig tudom, mi történik a tetőn, és személyesen állok jót a minőségért.",
+      "Budapesti székhellyel dolgozom, de nem csak a környéken: Magyarország, Ausztria, Szlovákia és Németország egész területén vállalok munkát. A felmérés és az árajánlat ingyenes és kötelezettségmentes.",
     ],
     checkItems: [
-      "Mindig személyes kivitelezés   nem adok ki alvállalkozónak",
+      "Mindig személyes kivitelezés – nem adok ki alvállalkozónak",
       "Ingyenes helyszíni felmérés és árajánlat",
       "5 év garanciát vállalok az elvégzett munkára",
       "Számlás teljesítés, szerződéssel",
     ],
-    portraitAria: "Tetőfedő mester portréja",
-    portraitPlaceholder: "Ide kerül a portré- vagy munkafotó",
+    since: "{year} óta a szakmában",
+    area: {
+      title: "Kiszállási körzet",
+      countries: { HU: "Magyarország", AT: "Ausztria", SK: "Szlovákia", DE: "Németország" },
+      hq: "Székhely: Budapest",
+      mapAria: "Térkép: Magyarország, Ausztria, Szlovákia és Németország egész területén vállalunk munkát, székhelyünk Budapest.",
+    },
   },
   services: {
     eyebrow: "Szolgáltatások",
     title: "Mindent elvégzek, ami a tető körül szükséges.",
     subtitle:
-      "Tetőfedéstől a bádogos részletekig, az ácsszerkezettől a szigetelésig   egy kézből, egy vállalkozástól.",
+      "Tetőfedéstől a bádogos részletekig, az ácsszerkezettől a szigetelésig – egy kézből, egy vállalkozástól.",
     details: "Részletek",
     items: {
       tetofedes: {
         cardTitle: "Tetőfedés",
         cardDescription:
           "Legyen szó új tető kialakításáról vagy a régi csere, mindent megoldunk profi anyagokkal és precíz kivitelezéssel.",
-        pageTitle: "Tetőfedés   minden anyaggal, minden tetőn",
+        pageTitle: "Tetőfedés – minden anyaggal, minden tetőn",
         alt: "Tetőfedési munkák illusztrációja",
         paragraphs: [
           "A tetőfedés az egyik legfontosabb döntés, amit egy ház tulajdonosa hozhat. Rossz minőségű munka esetén a beázás nem csak kellemetlen, de komoly szerkezeti károkat is okozhat. Ezért nem spórolok sem az anyagokon, sem a munkán.",
-          "Kerámiát és beton cserepet egyaránt felszerelünk. A kerámia cserép hosszabb élettartamú és könnyebb, a beton olcsóbb, de nehezebb   együtt mérlegelünk a tetőszerkezet teherbírása alapján.",
+          "Kerámiát és beton cserepet egyaránt felszerelünk. A kerámia cserép hosszabb élettartamú és könnyebb, a beton olcsóbb, de nehezebb – együtt mérlegelünk a tetőszerkezet teherbírása alapján.",
           "Lemeztetőkhöz trapéz- és hullámlemezzel is dolgozom. Ezek gazdaságos, tartós megoldások mezőgazdasági épületekre, garázsokra, és kerti épületekre.",
         ],
         bullets: [
@@ -118,12 +122,12 @@ const hu = {
       badogos: {
         cardTitle: "Bádogos munkák",
         cardDescription:
-          "Az esővíz elvezetésétől az egyedi lemez megmunkálásig   a bádogos részletek nem csak esztétikai, hanem védelmi szerepet is betöltenek.",
-        pageTitle: "Bádogos munkák   az esővíztől az egyedi megmunkálásig",
+          "Az esővíz elvezetésétől az egyedi lemez megmunkálásig – a bádogos részletek nem csak esztétikai, hanem védelmi szerepet is betöltenek.",
+        pageTitle: "Bádogos munkák – az esővíztől az egyedi megmunkálásig",
         alt: "Bádogos munkák illusztrációja",
         paragraphs: [
           "A bádogos munkák célja az esővíz megfelelő elvezetése és a tető érzékeny pontjainak védelme. Egy rossz ereszcsatorna vagy hiányzó széllemez hosszú távon komoly károkat tud okozni a falakban és az alapokban.",
-          "Horganyzott és alumínium ereszcsatornával egyaránt dolgozom. Az alumínium tartósabb és könnyebb, a PVC olcsóbb   az ajánlatnál mindkét variációt részletezem.",
+          "Horganyzott és alumínium ereszcsatornával egyaránt dolgozom. Az alumínium tartósabb és könnyebb, a PVC olcsóbb – az ajánlatnál mindkét variációt részletezem.",
           "Kémény körüli villámszigeteléssel, tetőátvezetésekkel és oromlemezekkel is foglalkozom. Ezek a részletek sokszor elmaradnak, de a beázások 60%-a ezeken a pontokon keletkezik.",
         ],
         bullets: [
@@ -141,11 +145,11 @@ const hu = {
         cardTitle: "Ácsszerkezet",
         cardDescription:
           "A tető tartószerkezete az alap. Ha a szarufák, szelemnek vagy egyéb faszerkezet sérült, azt időben kell kezelni.",
-        pageTitle: "Ácsszerkezet   az alap, amire minden épül",
+        pageTitle: "Ácsszerkezet – az alap, amire minden épül",
         alt: "Ácsszerkezeti munkák illusztrációja",
         paragraphs: [
           "A tetőszerkezet fából készül, és ha nedvesség éri, megindulhat a korhadás. Sajnos sok esetben ezt csak tetőcsere közben veszik észre. Ezért minden felmérés alkalmával a szerkezetet is megvizsgálom.",
-          "Teljes ácsszerkezet csere esetén statikus tervrajz alapján dolgozom, és az engedélyeztetésben is segítek. Kisebb gerendacsere esetén nem kell engedély   ezt gyorsan el lehet intézni.",
+          "Teljes ácsszerkezet csere esetén statikus tervrajz alapján dolgozom, és az engedélyeztetésben is segítek. Kisebb gerendacsere esetén nem kell engedély – ezt gyorsan el lehet intézni.",
         ],
         bullets: [
           "Teljes ácsszerkezet tervezés és kivitelezés",
@@ -161,10 +165,10 @@ const hu = {
         cardTitle: "Szigetelés & egyéb",
         cardDescription:
           "A megfelelő fólia és lécezés megvédi a tetőszerkezetet a nedvességtől, és energiahatékonyabbá teszi az otthonát.",
-        pageTitle: "Szigetelés és fóliázás   ami a tető alatt van",
+        pageTitle: "Szigetelés és fóliázás – ami a tető alatt van",
         alt: "Szigetelési munkák illusztrációja",
         paragraphs: [
-          "A modern tetőknél az alátét fólia nélkülözhetetlen. Megakadályozza, hogy a szél által felhajtott csapadék bejusson a tetőszerkezetbe, és a kondenz vizet is elvezeti. Kétféle fóliával dolgozom: párazáróval és páraáteresztővel   a felhasználás helye dönti el, melyik kerül hova.",
+          "A modern tetőknél az alátét fólia nélkülözhetetlen. Megakadályozza, hogy a szél által felhajtott csapadék bejusson a tetőszerkezetbe, és a kondenz vizet is elvezeti. Kétféle fóliával dolgozom: párazáróval és páraáteresztővel – a felhasználás helye dönti el, melyik kerül hova.",
           "A lécezés kiosztása szintén kritikus: ha rossz a lécköz, a cserép nem fog jól illeszkedni. 15 éve ezzel foglalkozom, ezért automatikusan elvégzem a kiosztást minden cserepes tetőnél.",
         ],
         bullets: [
@@ -193,7 +197,7 @@ const hu = {
       },
       {
         title: "Részletes árajánlat",
-        text: "Írásos, tételes árajánlatot adok: anyagok, munkadíj, kellékek   minden tétel külön feltüntetve. Nincs rejtett költség.",
+        text: "Írásos, tételes árajánlatot adok: anyagok, munkadíj, kellékek – minden tétel külön feltüntetve. Nincs rejtett költség.",
       },
       {
         title: "Kivitelezés & átadás",
@@ -208,7 +212,7 @@ const hu = {
     footnote: "Valódi Google-vélemények alapján · Átlag: 5.0 ★",
     quotes: [
       "Nagyon precíz és megbízható mester. Pontosan jött ki, pontosan annyit számolt fel, amennyit mondott. A szomszédoknak is ajánlottam.",
-      "Teljesen felújítottuk a tetőt   cseréptől az ereszcsatornáig. Egy hét alatt végzett, és azóta nem volt egyetlen beázás sem. Nagyon elégedett vagyok.",
+      "Teljesen felújítottuk a tetőt – cseréptől az ereszcsatornáig. Egy hét alatt végzett, és azóta nem volt egyetlen beázás sem. Nagyon elégedett vagyok.",
       "Vihar után kaptam a számot. Másnap már kint volt, megcsinálta a sürgős javítást, és azután visszajött az állandó megoldással is. Profi munka.",
     ],
   },
@@ -220,7 +224,7 @@ const hu = {
     quote: "Árajánlatot kérek",
   },
   servicesPage: {
-    metaTitle: "Szolgáltatások   Tetőfedés, Bádogos, Ácsszerkezet | Máté Tetőfedő",
+    metaTitle: "Szolgáltatások – Tetőfedés, Bádogos, Ácsszerkezet | Máté Tetőfedő",
     metaDescription:
       "Tetőfedés, bádogos munkák, ácsszerkezet és szigetelés Gödöllő és környékén. Minden tetőhöz kapcsolódó munkát elvégzünk.",
     ogDescription: "Tetőfedés, bádogos munkák, ácsszerkezet és szigetelés Gödöllő és környékén.",
@@ -228,12 +232,12 @@ const hu = {
     calculatorCta: "Kalkulátorban kiszámítom",
   },
   calculatorPage: {
-    metaTitle: "Árkalkulátor   Tetőfedés és bádogos munkák becsült ára | Máté Tetőfedő",
+    metaTitle: "Árkalkulátor – Tetőfedés és bádogos munkák becsült ára | Máté Tetőfedő",
     metaDescription:
       "Számítsa ki tetőfedési munkák becsült költségét. Valós piaci árak alapján, ingyenes. Pontos ár a helyszíni felmérés után.",
     ogDescription: "Számítsa ki tetőfedési munkák becsült költségét. Valós piaci árak alapján, ingyenes.",
     title: "Árkalkulátor",
-    subtitle: "Becsülje fel a várható költségeket   valós piaci árak alapján",
+    subtitle: "Becsülje fel a várható költségeket – valós piaci árak alapján",
     importantLabel: "Fontos:",
     disclaimer:
       "Az alábbi árak tájékoztató jellegűek és a piaci átlagárakon alapulnak. A pontos ár a helyszíni felmérés után derül ki. Ingyenes felmérésért hívjon minket:",
@@ -284,13 +288,13 @@ const hu = {
         tooltip: "A gerinc mentén elhelyezett szellőzőszalag a tető szellőztetéséhez.",
       },
     },
-    sectionA: "A   Alap adatok",
+    sectionA: "A – Alap adatok",
     areaLabel: "A tető alapterülete",
     areaPlaceholder: "pl. 80",
     areaHelp:
-      "Adja meg a tető lejtős felületét   nem az alaplaptól mérve, hanem a tényleges fedési felületet. Ha nem tudja pontosan, a felmérés során mérjük meg.",
+      "Adja meg a tető lejtős felületét – nem az alaplaptól mérve, hanem a tényleges fedési felületet. Ha nem tudja pontosan, a felmérés során mérjük meg.",
     roofTypeLabel: "Tető típusa",
-    sectionB: "B   Anyagköltségek",
+    sectionB: "B – Anyagköltségek",
     rows: {
       foil: {
         label: "Páraáteresztő fólia",
@@ -314,7 +318,7 @@ const hu = {
           "Tartalmazza a szerszámhasználat díját, rögzítőelemeket, tömítőanyagokat és egyéb kisegédanyagokat.",
       },
     },
-    sectionC: "C   Ácsmunka",
+    sectionC: "C – Ácsmunka",
     carpentryToggle: "Szükséges ácsmunka is?",
     carpentryAreaLabel: "Ácsmunka területe",
     carpentryAreaPlaceholder: "pl. 30",
@@ -322,7 +326,7 @@ const hu = {
     carpentryMaterial: "Faanyag (gerendák, lécek)",
     carpentryLabor: "Ácsmunka munkadíja",
     carpentryOff: "Kapcsolja be a kapcsolót, ha ácsszerkezeti munkára is szüksége van.",
-    sectionD: "D   Plusz elemek",
+    sectionD: "D – Plusz elemek",
     sectionDHelp: "Jelölje be az opcionális elemeket, amelyek a tetőre kerülnek.",
     qtyAria: "{name} mennyisége",
     customHeading: "Egyéb / egyedi kellék hozzáadása",
@@ -361,7 +365,7 @@ const hu = {
     downloadPdf: "Letöltés PDF-ben",
     downloadPdfAria: "Árajánlat letöltése PDF formátumban",
     pdf: {
-      title: "Máté Tetőfedő & Bádogos   Tájékoztató árajánlat",
+      title: "Máté Tetőfedő & Bádogos – Tájékoztató árajánlat",
       roofType: "Tető típusa",
       roofArea: "Tető alapterülete",
       item: "Tétel",
@@ -385,12 +389,12 @@ const hu = {
     },
   },
   referencesPage: {
-    metaTitle: "Referenciák   Befejezett munkáink | Máté Tetőfedő Gödöllő",
+    metaTitle: "Referenciák – Befejezett munkáink | Máté Tetőfedő Gödöllő",
     metaDescription:
       "Befejezett tetőfedési, bádogos és ácsszerkezeti munkáink Gödöllő és környékéről. Cseréptető, lemez tető, felújítás.",
     ogDescription: "Befejezett tetőfedési, bádogos és ácsszerkezeti munkáink Gödöllő és környékéről.",
     title: "Referenciák",
-    subtitle: "Befejezett munkáink fotói   Gödöllő és környékéről",
+    subtitle: "Befejezett munkáink fotói – Gödöllő és környékéről",
     visitText:
       "Szeretné látni a munkáimat a helyszínen? Hívjon, és elmegyünk egy-két elkészült munkámhoz, hogy meggyőződhessen a minőségről.",
     callAria: "Hívjon telefonon",
@@ -420,13 +424,12 @@ const hu = {
       { title: "Teljes csere cseréptetőre", detail: "175 nm" },
     ],
     noResults: "Nincs találat ebben a kategóriában.",
-    photoAria: "{title} munkafotó",
     close: "Bezárás",
   },
   contactPage: {
     metaTitle: "Kapcsolat & Árajánlat kérés | Máté Tetőfedő Gödöllő",
     metaDescription:
-      "Lépjen kapcsolatba tetőfedő mesterünkkel. Ingyenes felmérés, kötelezettségmentes árajánlat. Gödöllő és 30 km-es körzet.",
+      "Lépjen kapcsolatba tetőfedő mesterünkkel. Ingyenes felmérés, kötelezettségmentes árajánlat. Magyarország, Ausztria, Szlovákia és Németország.",
     ogDescription:
       "Lépjen kapcsolatba tetőfedő mesterünkkel. Ingyenes felmérés, kötelezettségmentes árajánlat.",
     title: "Kapcsolat",
@@ -436,14 +439,14 @@ const hu = {
     emailLabel: "E-mail",
     emailSub: "Általában 24 órán belül válaszolok",
     hqLabel: "Székhely",
-    hqValue: "Gödöllő, Pest megye",
-    hqSub: "Szolgáltatási körzet: 30 km",
+    hqValue: "Budapest",
+    hqSub: "Munkaterület: Magyarország, Ausztria, Szlovákia, Németország",
     hoursHeading: "Nyitvatartás",
     hoursAria: "Nyitvatartási idők",
     days: ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"],
     closed: "Zárva",
     mapTitle: "Máté Tetőfedő helyszíne Google Térképen",
-    mapAria: "Gödöllő helyszíne Google Térképen",
+    mapAria: "Budapest helyszíne Google Térképen",
     formTitle: "Árajánlat kérés / kapcsolatfelvétel",
     formSubtitle: "A felmérés és az árajánlat ingyenes és kötelezettségmentes.",
   },
@@ -494,10 +497,10 @@ const hu = {
   },
   privacyPage: {
     metaTitle: "Adatvédelmi tájékoztató | Máté Tetőfedő & Bádogos",
-    metaDescription: "Adatvédelmi tájékoztató   Máté Tetőfedő & Bádogos",
+    metaDescription: "Adatvédelmi tájékoztató – Máté Tetőfedő & Bádogos",
     title: "Adatvédelmi tájékoztató",
     heading: "Adatkezelési tájékoztató",
-    controller: "Az adatkezelő neve: Máté (egyéni vállalkozó), székhely: Gödöllő, Pest megye.",
+    controller: "Az adatkezelő neve: Máté (egyéni vállalkozó), székhely: Budapest.",
     purpose:
       "A kapcsolatfelvételi űrlapon megadott személyes adatokat (név, telefonszám, e-mail cím, cím) kizárólag az árajánlat elkészítése és a kapcsolatfelvétel céljából kezeljük. Az adatokat harmadik félnek nem adjuk át, és az ajánlatadás lezárultával töröljük.",
     legalBasis: "Az adatkezelés jogalapja: az érintett hozzájárulása (GDPR 6. cikk (1) a) pont).",

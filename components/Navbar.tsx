@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Phone, Menu, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Phone, ArrowUpRight } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import LogoMark from "@/components/LogoMark";
 import { localizePath, stripLocale, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -13,6 +15,8 @@ interface NavbarProps {
   dict: Dictionary["nav"];
   callNowNumber: string;
 }
+
+const spring = { type: "spring", stiffness: 420, damping: 34 } as const;
 
 export default function Navbar({ lang, dict, callNowNumber }: NavbarProps) {
   const navLinks = [
@@ -25,142 +29,208 @@ export default function Navbar({ lang, dict, callNowNumber }: NavbarProps) {
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const reduceMotion = useReducedMotion();
   // Hungarian pages are rewritten internally to /hu/..., so normalise before comparing
   const pathname = localizePath(lang, stripLocale(usePathname()));
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
+    const handleScroll = () => setScrolled(window.scrollY > 12);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!mobileOpen) return;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, [mobileOpen]);
 
+  const closeMenu = () => setMobileOpen(false);
+
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#E7E5E4] transition-all duration-300 ${
-          scrolled ? "shadow-sm backdrop-blur-sm py-2" : "py-4"
-        }`}
-      >
-        <div className="container-custom flex items-center justify-between">
-          {/* Logo */}
-          <Link href={localizePath(lang, "/")} className="flex flex-col leading-none no-underline" aria-label={dict.logoAria}>
-            <span className="text-[22px] text-[#1C1917]">
-              <span className="font-extrabold relative">
-                Máté
-                <span
-                  className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#C84B11] rounded-full"
+      <header className="fixed inset-x-0 top-0 z-50">
+        <div
+          className={`border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+            scrolled || mobileOpen
+              ? "border-[#DDE2E5] bg-white/90 shadow-[0_10px_30px_-18px_rgba(20,24,27,0.35)] backdrop-blur-md"
+              : "border-transparent bg-white"
+          }`}
+        >
+          <div className="container-custom flex h-[72px] items-center gap-6">
+            {/* Logo */}
+            <Link
+              href={localizePath(lang, "/")}
+              className="group flex shrink-0 items-center gap-3"
+              aria-label={dict.logoAria}
+              onClick={closeMenu}
+            >
+              <LogoMark className="transition-transform duration-300 group-hover:-rotate-6" />
+              <span className="flex flex-col leading-none">
+                <span className="font-display text-[20px] text-[#14181B]">Máté</span>
+                <span className="mt-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-[#4F5A61]">
+                  Tetőfedő &amp; Bádogos
+                </span>
+              </span>
+            </Link>
+
+            {/* Desktop nav */}
+            <nav className="hidden flex-1 justify-center lg:flex" aria-label={dict.mainNavAria}>
+              <ul className="flex items-center gap-0.5" onMouseLeave={() => setHovered(null)}>
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onMouseEnter={() => setHovered(link.href)}
+                        aria-current={isActive ? "page" : undefined}
+                        className={`relative block whitespace-nowrap rounded-lg px-3.5 py-2 text-[14.5px] font-medium transition-colors duration-200 ${
+                          isActive ? "text-[#14181B]" : "text-[#4F5A61] hover:text-[#14181B]"
+                        }`}
+                      >
+                        {hovered === link.href && (
+                          <motion.span
+                            layoutId="nav-hover"
+                            className="absolute inset-0 rounded-lg bg-[#F1F3F4]"
+                            transition={reduceMotion ? { duration: 0 } : spring}
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span className="relative">{link.label}</span>
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-active"
+                            className="absolute inset-x-3.5 -bottom-[3px] h-[2.5px] rounded-full bg-[#C84B11]"
+                            transition={reduceMotion ? { duration: 0 } : spring}
+                            aria-hidden="true"
+                          />
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
+            {/* Language + call */}
+            <div className="ml-auto hidden items-center gap-2.5 lg:flex">
+              <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} />
+              <a
+                href="tel:+36300951686"
+                className="btn-primary h-10 !px-4 !py-0 text-[14px]"
+                aria-label={dict.callAria}
+              >
+                <Phone size={15} aria-hidden="true" />
+                <span className="hidden xl:inline">{dict.callNow}</span>
+              </a>
+            </div>
+
+            {/* Mobile: call shortcut + menu toggle */}
+            <div className="ml-auto flex items-center gap-2 lg:hidden">
+              <a
+                href="tel:+36300951686"
+                className="grid h-10 w-10 place-items-center rounded-[10px] bg-[#FBE9E0] text-[#C84B11]"
+                aria-label={dict.callAria}
+              >
+                <Phone size={17} aria-hidden="true" />
+              </a>
+              <button
+                type="button"
+                className="relative grid h-10 w-10 place-items-center rounded-[10px] border border-[#DDE2E5] bg-white"
+                onClick={() => setMobileOpen((o) => !o)}
+                aria-label={mobileOpen ? dict.closeMenu : dict.openMenu}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-menu"
+              >
+                <motion.span
+                  className="absolute h-[2px] w-[18px] rounded-full bg-[#14181B]"
+                  animate={mobileOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -4 }}
+                  transition={spring}
                   aria-hidden="true"
                 />
-              </span>
-              <span className="font-normal"> Tetőfedő</span>
-            </span>
-            <span className="text-[11px] font-medium text-[#A8A29E] tracking-widest uppercase mt-1">
-              &amp; Bádogos
-            </span>
-          </Link>
-
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label={dict.mainNavAria}>
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-[15px] font-medium transition-colors duration-200 pb-px border-b-2 ${
-                    isActive
-                      ? "text-[#C84B11] border-[#C84B11]"
-                      : "text-[#57534E] border-transparent hover:text-[#1C1917]"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Language switcher + CTA button */}
-          <div className="hidden lg:flex items-center gap-4">
-            <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} />
-            <a
-              href="tel:+36300951686"
-              className="btn-primary text-sm"
-              aria-label={dict.callAria}
-            >
-              <Phone size={16} aria-hidden="true" />
-              {dict.callNow}
-            </a>
-          </div>
-
-          {/* Mobile language switcher + hamburger */}
-          <div className="lg:hidden flex items-center gap-2">
-            <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} className="hidden sm:flex" />
-            <button
-              className="p-2 text-[#1C1917] rounded-md"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={mobileOpen ? dict.closeMenu : dict.openMenu}
-              aria-expanded={mobileOpen}
-            >
-              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+                <motion.span
+                  className="absolute h-[2px] w-[18px] rounded-full bg-[#14181B]"
+                  animate={mobileOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 4 }}
+                  transition={spring}
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-white flex flex-col pt-[80px]"
-          role="dialog"
-          aria-modal="true"
-          aria-label={dict.menuDialogAria}
-        >
-          <nav className="flex flex-col gap-1 p-6" aria-label={dict.mobileNavAria}>
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-xl font-semibold py-4 border-b border-[#E7E5E4] transition-colors ${
-                    isActive ? "text-[#C84B11]" : "text-[#1C1917]"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-          <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} className="px-6 sm:hidden" />
-          <div className="p-6 mt-auto">
-            <a
-              href="tel:+36300951686"
-              className="btn-primary w-full justify-center text-center"
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-menu"
+            className="fixed inset-x-0 bottom-0 top-[72px] z-40 flex flex-col overflow-y-auto bg-white lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label={dict.menuDialogAria}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8, transition: { duration: 0.15 } }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.nav
+              className="flex flex-col px-6 pt-4"
+              aria-label={dict.mobileNavAria}
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.045, delayChildren: 0.05 } } }}
             >
-              <Phone size={18} aria-hidden="true" />
-              {callNowNumber}
-            </a>
-          </div>
-        </div>
-      )}
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <motion.div
+                    key={link.href}
+                    variants={{
+                      hidden: { opacity: 0, x: reduceMotion ? 0 : -12 },
+                      visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+                    }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={closeMenu}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`flex items-center justify-between border-b border-[#DDE2E5] py-4 font-display text-[26px] ${
+                        isActive ? "text-[#C84B11]" : "text-[#14181B]"
+                      }`}
+                    >
+                      {link.label}
+                      <ArrowUpRight size={22} className="text-[#7F8A91]" aria-hidden="true" />
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </motion.nav>
+
+            <LanguageSwitcher lang={lang} ariaLabel={dict.languageAria} variant="grid" className="px-6 pt-6" />
+
+            <div className="mt-auto p-6">
+              <a href="tel:+36300951686" className="btn-primary w-full">
+                <Phone size={18} aria-hidden="true" />
+                {callNowNumber}
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Spacer for fixed navbar */}
-      <div className="h-[73px]" aria-hidden="true" />
+      <div className="h-[72px]" aria-hidden="true" />
     </>
   );
 }

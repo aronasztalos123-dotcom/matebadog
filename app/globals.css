@@ -1,34 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/*
+ * "Tile & Zinc": terracotta roof tile against galvanised zinc and slate.
+ * Fonts come from next/font in app/[lang]/layout.tsx as CSS variables.
+ */
 @theme {
   --color-brand: #C84B11;
   --color-brand-hover: #A33D0D;
   --color-brand-light: #FBE9E0;
-  --color-dark: #1C1917;
-  --color-off-white: #F7F5F2;
-  --color-border: #E7E5E4;
-  --color-text-primary: #1C1917;
-  --color-text-secondary: #57534E;
-  --color-text-muted: #A8A29E;
-  --font-sans: "Inter", sans-serif;
-  --radius-btn: 6px;
-  --radius-card: 12px;
-  --radius-input: 8px;
+  --color-dark: #14181B;
+  --color-slate: #1B2227;
+  --color-off-white: #F1F3F4;
+  --color-border: #DDE2E5;
+  --color-text-primary: #14181B;
+  --color-text-secondary: #4F5A61;
+  --color-text-muted: #7F8A91;
+  --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --radius-btn: 10px;
+  --radius-card: 16px;
+  --radius-input: 10px;
   --radius-pill: 9999px;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 88px;
   }
 
   body {
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.7;
-    color: #1C1917;
+    color: #14181B;
     background-color: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: #C84B11;
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid #C84B11;
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 }
 
@@ -41,15 +69,24 @@
     padding-right: 24px;
   }
 
+  /* Semi-expanded heavy Archivo: the display voice of the site */
+  .font-display {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
   .label-text {
-    font-size: 13px;
+    font-family: var(--font-mono);
+    font-size: 12px;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   .rounded-card {
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .rounded-pill {
@@ -57,106 +94,121 @@
   }
 
   .rounded-btn {
-    border-radius: 6px;
+    border-radius: 10px;
   }
 
   .rounded-input {
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
   .shadow-card {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 2px rgba(20, 24, 27, 0.06), 0 6px 20px -6px rgba(20, 24, 27, 0.12);
   }
 
   .shadow-card-hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 12px 32px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 4px rgba(20, 24, 27, 0.06), 0 22px 44px -16px rgba(20, 24, 27, 0.28);
   }
 
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #C84B11;
-    color: white;
-    padding: 14px 28px;
-    font-weight: 600;
-    font-size: 15px;
-    border-radius: 6px;
-    border: 2px solid #C84B11;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .btn-primary:hover {
-    background-color: #A33D0D;
-    border-color: #A33D0D;
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: transparent;
-    color: #C84B11;
-    padding: 14px 28px;
-    font-weight: 600;
-    font-size: 15px;
-    border-radius: 6px;
-    border: 2px solid #C84B11;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  .btn-secondary:hover {
-    background-color: #FBE9E0;
-  }
-
-  .btn-white {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: white;
-    color: #C84B11;
-    padding: 14px 28px;
-    font-weight: 600;
-    font-size: 15px;
-    border-radius: 6px;
-    border: 2px solid white;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  .btn-white:hover {
-    background-color: #F7F5F2;
-  }
-
+  /* Buttons */
+  .btn-primary,
+  .btn-secondary,
+  .btn-white,
   .btn-white-outline {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background-color: transparent;
-    color: white;
-    padding: 14px 28px;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
     font-weight: 600;
     font-size: 15px;
-    border-radius: 6px;
-    border: 2px solid white;
-    transition: all 0.2s ease;
+    line-height: 1.2;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
     cursor: pointer;
     text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+      box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-primary:active,
+  .btn-secondary:active,
+  .btn-white:active,
+  .btn-white-outline:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .btn-primary {
+    background-color: #C84B11;
+    color: white;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 1px 2px rgba(20, 24, 27, 0.2),
+      0 8px 20px -8px rgba(200, 75, 17, 0.7);
+  }
+
+  .btn-primary:hover {
+    background-color: #B5430F;
+    transform: translateY(-1px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 4px rgba(20, 24, 27, 0.2),
+      0 14px 28px -10px rgba(200, 75, 17, 0.8);
+  }
+
+  .btn-secondary {
+    background-color: white;
+    color: #14181B;
+    border-color: #DDE2E5;
+    box-shadow: 0 1px 2px rgba(20, 24, 27, 0.06);
+  }
+
+  .btn-secondary:hover {
+    border-color: #C84B11;
+    color: #C84B11;
+    transform: translateY(-1px);
+  }
+
+  .btn-white {
+    background-color: white;
+    color: #14181B;
+    box-shadow: 0 1px 2px rgba(20, 24, 27, 0.15), 0 10px 24px -10px rgba(20, 24, 27, 0.5);
+  }
+
+  .btn-white:hover {
+    background-color: #F1F3F4;
+    transform: translateY(-1px);
+  }
+
+  .btn-white-outline {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.28);
   }
 
   .btn-white-outline:hover {
     background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-1px);
+  }
+
+  /* Beaver-tail roof tiles, laid in offset courses */
+  .tile-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cg fill='none' stroke='white' stroke-width='1.2'%3E%3Cpath d='M0 14a14 14 0 0 0 28 0M-14 0a14 14 0 0 0 28 0M14 0a14 14 0 0 0 28 0'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 28px 28px;
+  }
+
+  /* Scalloped eave: a row of tile ends hanging over the next section */
+  .eave {
+    height: 14px;
+    background-image: radial-gradient(circle at 50% 0, var(--eave-color) 13px, transparent 13.5px);
+    background-size: 28px 14px;
+    background-repeat: repeat-x;
+    background-position: center top;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

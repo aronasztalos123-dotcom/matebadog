@@ -53,21 +53,21 @@ export default function KapcsolatForm({ dict }: KapcsolatFormProps) {
   };
 
   const inputClass = (hasError: boolean) =>
-    `w-full border rounded-[8px] px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:ring-2 transition-all bg-white ${
+    `w-full rounded-[10px] border bg-white px-4 py-3 text-[15px] text-[#14181B] transition-[border-color,box-shadow] placeholder:text-[#7F8A91] focus:outline-none focus:ring-4 ${
       hasError
-        ? "border-red-400 focus:ring-red-300"
-        : "border-[#E7E5E4] focus:ring-[#C84B11] focus:border-transparent"
+        ? "border-red-500 focus:ring-red-500/15"
+        : "border-[#DDE2E5] hover:border-[#B9C2C8] focus:border-[#C84B11] focus:ring-[#C84B11]/15"
     }`;
 
-  const labelClass = "block text-sm font-medium text-[#1C1917] mb-1.5";
-  const errorClass = "mt-1.5 text-xs text-red-500 flex items-center gap-1";
+  const labelClass = "block text-sm font-medium text-[#14181B] mb-1.5";
+  const errorClass = "mt-1.5 flex items-center gap-1 text-xs text-red-600";
 
   if (submitted) {
     return (
       <div className="py-8 flex flex-col items-center text-center">
         <CheckCircle size={52} className="text-[#15803D] mb-5" aria-hidden="true" />
-        <h3 className="text-xl font-bold text-[#1C1917] mb-3">{dict.successTitle}</h3>
-        <p className="text-[#57534E] text-sm leading-relaxed max-w-sm">
+        <h3 className="font-display mb-3 text-xl text-[#14181B]">{dict.successTitle}</h3>
+        <p className="text-[#4F5A61] text-sm leading-relaxed max-w-sm">
           {dict.successText}{" "}
           <a href="tel:+36300951686" className="font-semibold text-[#C84B11]">
             +36 30 095 1686
@@ -184,7 +184,7 @@ export default function KapcsolatForm({ dict }: KapcsolatFormProps) {
               </option>
             ))}
           </select>
-          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A8A29E] pointer-events-none" aria-hidden="true" />
+          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7F8A91] pointer-events-none" aria-hidden="true" />
         </div>
       </div>
 
@@ -205,7 +205,7 @@ export default function KapcsolatForm({ dict }: KapcsolatFormProps) {
               </option>
             ))}
           </select>
-          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A8A29E] pointer-events-none" aria-hidden="true" />
+          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7F8A91] pointer-events-none" aria-hidden="true" />
         </div>
       </div>
 
@@ -233,7 +233,7 @@ export default function KapcsolatForm({ dict }: KapcsolatFormProps) {
             aria-invalid={!!errors.consent}
             aria-describedby={errors.consent ? "consent-error" : undefined}
           />
-          <span className="text-[#57534E] text-sm leading-relaxed">
+          <span className="text-[#4F5A61] text-sm leading-relaxed">
             {dict.consent}{" "}
             <span className="text-[#C84B11]">*</span>
           </span>

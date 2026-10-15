@@ -13,7 +13,6 @@ const en: Dictionary = {
   common: {
     home: "Home",
     breadcrumbAria: "Breadcrumb",
-    photoPlaceholder: "Project photo coming soon",
     callNowNumber: "Call now: +36 30 095 1686",
   },
   nav: {
@@ -50,7 +49,7 @@ const en: Dictionary = {
       roofWindow: "Roof window installation",
     },
     contactHeading: "Contact details",
-    location: "Gödöllő, Pest County, Hungary",
+    location: "Budapest, Hungary",
     weekdays: "Monday–Friday: 7:00–18:00",
     saturday: "Saturday: 8:00–13:00",
     privacy: "Privacy policy",
@@ -77,7 +76,7 @@ const en: Dictionary = {
     paragraphs: [
       "I'm Máté Sóki, a master roofer and tinsmith. I have been designing, renovating and building roofs since 2009. I was born in Gödöllő, I live here, and my business thrives on recommendations from local customers.",
       "I don't use subcontractors – I do the work myself, or together with a reliable, permanent assistant. That means I always know what is happening on the roof, and I personally guarantee the quality.",
-      "I travel for surveys across the whole area: Gödöllő, Aszód, Bag, Pécel, Isaszeg, Kistarcsa, Mogyoród and Vácszentlászló. The survey and the quote are free and without obligation.",
+      "I'm based in Budapest, but I don't only work locally: I take on jobs anywhere in Hungary, Austria, Slovakia and Germany. The survey and the quote are free and without obligation.",
     ],
     checkItems: [
       "Always done in person – never subcontracted",
@@ -85,8 +84,13 @@ const en: Dictionary = {
       "5-year warranty on all completed work",
       "Invoiced work, with a written contract",
     ],
-    portraitAria: "Portrait of the master roofer",
-    portraitPlaceholder: "Portrait or project photo coming soon",
+    since: "In the trade since {year}",
+    area: {
+      title: "Service area",
+      countries: { HU: "Hungary", AT: "Austria", SK: "Slovakia", DE: "Germany" },
+      hq: "Based in Budapest",
+      mapAria: "Map: we work across all of Hungary, Austria, Slovakia and Germany, based in Budapest.",
+    },
   },
   services: {
     eyebrow: "Services",
@@ -421,13 +425,12 @@ const en: Dictionary = {
       { title: "Full replacement with a tiled roof", detail: "175 m²" },
     ],
     noResults: "No results in this category.",
-    photoAria: "{title} project photo",
     close: "Close",
   },
   contactPage: {
     metaTitle: "Contact & Quote Request | Máté Tetőfedő Gödöllő",
     metaDescription:
-      "Get in touch with our master roofer. Free survey, no-obligation quote. Gödöllő and a 30 km radius.",
+      "Get in touch with our master roofer. Free survey, no-obligation quote. Hungary, Austria, Slovakia and Germany.",
     ogDescription: "Get in touch with our master roofer. Free survey, no-obligation quote.",
     title: "Contact",
     subtitle: "Write, call, or request a free survey",
@@ -436,14 +439,14 @@ const en: Dictionary = {
     emailLabel: "Email",
     emailSub: "I usually reply within 24 hours",
     hqLabel: "Based in",
-    hqValue: "Gödöllő, Pest County, Hungary",
-    hqSub: "Service area: 30 km",
+    hqValue: "Budapest, Hungary",
+    hqSub: "Service area: Hungary, Austria, Slovakia, Germany",
     hoursHeading: "Opening hours",
     hoursAria: "Opening hours",
     days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     closed: "Closed",
     mapTitle: "Máté Tetőfedő location on Google Maps",
-    mapAria: "Gödöllő location on Google Maps",
+    mapAria: "Budapest location on Google Maps",
     formTitle: "Quote request / get in touch",
     formSubtitle: "The survey and the quote are free and without obligation.",
   },
@@ -497,7 +500,7 @@ const en: Dictionary = {
     metaDescription: "Privacy policy – Máté Tetőfedő & Bádogos",
     title: "Privacy policy",
     heading: "Data processing notice",
-    controller: "Data controller: Máté (sole trader), registered office: Gödöllő, Pest County, Hungary.",
+    controller: "Data controller: Máté (sole trader), registered office: Budapest, Hungary.",
     purpose:
       "Personal data provided in the contact form (name, phone number, email address, address) is processed solely for the purpose of preparing a quote and getting in touch. The data is not shared with third parties and is deleted once the quotation process is complete.",
     legalBasis: "Legal basis for processing: the consent of the data subject (GDPR Article 6(1)(a)).",

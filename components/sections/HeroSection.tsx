@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Phone, ArrowRight } from "lucide-react";
+import { ArrowRight, Calculator } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import RoofIllustration from "@/components/RoofIllustration";
 import { localizePath, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -11,115 +12,100 @@ interface HeroSectionProps {
   dict: Dictionary["hero"];
 }
 
+const HERO_BG = "#1A2025";
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export default function HeroSection({ lang, dict }: HeroSectionProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const reduce = useReducedMotion();
 
-  const containerVariants: Variants = {
+  const container: Variants = {
     hidden: {},
-    visible: {
-      transition: { staggerChildren: prefersReducedMotion ? 0 : 0.12 },
-    },
+    visible: { transition: { staggerChildren: reduce ? 0 : 0.09, delayChildren: 0.05 } },
   };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 28 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] } },
+  const item: Variants = {
+    hidden: { opacity: 0, y: reduce ? 0 : 18 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
+  };
+  // Headline lines rise out of a mask
+  const line: Variants = {
+    hidden: { y: reduce ? 0 : "105%" },
+    visible: { y: 0, transition: { duration: 0.8, ease } },
   };
 
   return (
-    <section
-      className="relative min-h-[88vh] flex items-center"
-      aria-label={dict.aria}
-      style={{
-        background:
-          "linear-gradient(135deg, #2C2517 0%, #1C1917 40%, #0f0d0b 100%)",
-      }}
-    >
-      {/* Noise texture overlay */}
+    <section className="relative z-10 text-white" style={{ backgroundColor: HERO_BG }} aria-label={dict.aria}>
+      {/* Faint drafting grid, strongest behind the roof */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundSize: "200px 200px",
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
+          maskImage: "radial-gradient(ellipse 60% 70% at 75% 50%, black, transparent)",
+          WebkitMaskImage: "radial-gradient(ellipse 60% 70% at 75% 50%, black, transparent)",
         }}
         aria-hidden="true"
       />
 
-      {/* Subtle orange glow */}
-      <div
-        className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none"
-        style={{ background: "#C84B11" }}
-        aria-hidden="true"
-      />
-
-      <div className="container-custom relative z-10 py-24">
-        <motion.div
-          className="max-w-[640px]"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Eyebrow */}
-          <motion.p
-            variants={itemVariants}
-            className="label-text text-[#C84B11] mb-5"
-          >
+      <div className="container-custom relative grid items-center gap-12 py-14 md:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-16">
+        <motion.div variants={container} initial="hidden" animate="visible">
+          <motion.p variants={item} className="label-text mb-6 flex items-center gap-3 text-[#F0A27A]">
+            <span className="h-px w-8 bg-[#C84B11]" aria-hidden="true" />
             {dict.eyebrow}
           </motion.p>
 
-          {/* H1 */}
-          <motion.h1
-            variants={itemVariants}
-            className="text-white font-bold leading-[1.15] tracking-tight mb-6"
-            style={{ fontSize: "clamp(36px, 5vw, 52px)" }}
-          >
-            {dict.titleLine1}
-            <br />
-            {dict.titleLine2}
-          </motion.h1>
+          <h1 className="font-display mb-7 text-[clamp(36px,4.3vw,56px)] leading-[1.02]">
+            <span className="block overflow-hidden pb-[0.08em]">
+              <motion.span variants={line} className="block">
+                {dict.titleLine1}
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden pb-[0.08em]">
+              <motion.span variants={line} className="block text-[#EE7A3F]">
+                {dict.titleLine2}
+              </motion.span>
+            </span>
+          </h1>
 
-          {/* Body */}
-          <motion.p
-            variants={itemVariants}
-            className="text-white/80 text-lg leading-relaxed mb-10 max-w-[520px]"
-          >
+          <motion.p variants={item} className="mb-10 max-w-[520px] text-lg leading-relaxed text-white/75">
             {dict.body}
           </motion.p>
 
-          {/* Buttons */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap gap-4 mb-14"
-          >
-            <a href="#kapcsolat" className="btn-primary">
-              <ArrowRight size={18} aria-hidden="true" />
+          <motion.div variants={item} className="mb-12 flex flex-wrap gap-3">
+            <Link href={localizePath(lang, "/kapcsolat")} className="btn-primary group">
               {dict.ctaPrimary}
-            </a>
+              <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
             <Link href={localizePath(lang, "/arkalkulator")} className="btn-white-outline">
+              <Calculator size={17} aria-hidden="true" />
               {dict.ctaSecondary}
             </Link>
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap gap-0 divide-x divide-white/20"
-          >
+          <motion.dl variants={item} className="grid max-w-[520px] grid-cols-3 border-t border-white/12">
             {dict.stats.map((stat) => (
-              <div key={stat.value} className="pr-8 pl-0 first:pl-0 [&:not(:first-child)]:pl-8">
-                <p className="text-white text-2xl font-bold leading-tight">
+              <div key={stat.value} className="border-white/12 pt-5 pr-3 [&:not(:first-child)]:border-l [&:not(:first-child)]:pl-3 sm:pr-4 sm:[&:not(:first-child)]:pl-5">
+                <dt className="sr-only">{stat.label}</dt>
+                <dd className="font-mono text-[clamp(17px,2.2vw,26px)] font-semibold leading-none text-white">
                   {stat.value}
-                </p>
-                <p className="text-white/60 text-sm mt-0.5">{stat.label}</p>
+                </dd>
+                <dd className="mt-2 text-[13px] leading-snug text-white/55" aria-hidden="true">
+                  {stat.label}
+                </dd>
               </div>
             ))}
-          </motion.div>
+          </motion.dl>
         </motion.div>
+
+        <div className="mx-auto w-full max-w-[560px] lg:max-w-none">
+          <RoofIllustration lang={lang} />
+        </div>
       </div>
 
-      {/* Bottom fade */}
+      {/* Tile ends hanging over the next section */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none"
+        className="eave absolute inset-x-0 top-full"
+        style={{ "--eave-color": HERO_BG } as React.CSSProperties}
         aria-hidden="true"
       />
     </section>
